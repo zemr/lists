@@ -5,6 +5,13 @@ export const saveState = (state) => {
   } catch (err) { }
 };
 
+export const saveDate = (date) => {
+  try {
+    const modDate = JSON.stringify(date);
+    return localStorage.setItem('date', modDate);
+  } catch (err) { }
+};
+
 export const loadState = () => {
   try {
     const storageState = localStorage.getItem('state');

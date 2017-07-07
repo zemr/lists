@@ -5,8 +5,12 @@ import People from './people/people';
 
 class App extends React.Component {
   componentWillMount() {
+    const url = 'https://api.github.com/repos/reactjs/react-redux/contributors';
     if (!localStorage.getItem('state')) {
-      this.props.fetchPeople('https://api.github.com/repos/reactjs/react-redux/contributors');
+      this.props.fetchPeople(url);
+    } else if (localStorage.getItem('date')) {
+      const modified = JSON.parse(localStorage.getItem('date'));
+      this.props.fetchPeople(url, modified);
     }
   }
 
@@ -22,6 +26,6 @@ class App extends React.Component {
 export default connect(
   state => ({}),
   dispatch => ({
-    fetchPeople: (url) => dispatch(fetchPeople(url))
+    fetchPeople: (url, modified) => dispatch(fetchPeople(url, modified))
   })
 )(App)

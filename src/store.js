@@ -1,7 +1,7 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import throttle from 'lodash.throttle';
-import { saveState, loadState } from './utils/storage';
+import { saveState, saveDate, loadState } from './utils/storage';
 
 import peopleReducer from './people/people-reducer';
 
@@ -24,9 +24,11 @@ const store = createStore(
 store.subscribe(throttle(() => {
   saveState({
     people: {
-      data: store.getState().people.data
+      data: store.getState().people.data,
+      modified: store.getState().people.modified
     }
   });
+  saveDate(store.getState().people.modified);
 }, 1000));
 
 export default store
