@@ -5,13 +5,20 @@ const FETCH_SUCCESS = 'people/FETCH_SUCCESS';
 const FETCH_FAIL = 'people/FETCH_FAIL';
 const CLEAR_STATE = 'people/CLEAR_STATE';
 
-export const fetchPeople = (url, modified = '') => dispatch => {
-  dispatch({ type: FETCH_BEGIN });
-  return fetch(url, {
+export const fetchPeople = (url, modified) => dispatch => {
+  let initObject;
+  if (modified === undefined) {
+    initObject = {};
+  } else {
+    initObject = {
       headers: {
         "If-Modified-Since": modified
       }
-    }
+    };
+  }
+
+  dispatch({ type: FETCH_BEGIN });
+  return fetch(url, initObject
   ).then(
     response => {
       if (response.ok) {
