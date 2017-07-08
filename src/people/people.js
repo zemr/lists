@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const People = ({ people }) => (
+export const People = ({ people }) => (
   <div>
     {
       people.length > 0
       ?
       people.map(person => (
-        <div key={person.id}>{person.login}</div>
+        <div className="person" key={person.id}>{person.login}</div>
       ))
       : null
     }

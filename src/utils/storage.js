@@ -1,14 +1,7 @@
-export const saveState = (state) => {
+export const saveStateData = (key, state) => {
   try {
-    const storageState = JSON.stringify(state);
-    return localStorage.setItem('state', storageState);
-  } catch (err) { }
-};
-
-export const saveDate = (date) => {
-  try {
-    const modDate = JSON.stringify(date);
-    return localStorage.setItem('date', modDate);
+    const storageData = JSON.stringify(state);
+    return localStorage.setItem(key, storageData);
   } catch (err) { }
 };
 

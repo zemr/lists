@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchPeople } from './people/people-reducer';
 import People from './people/people';
 
-class App extends React.Component {
+export class App extends React.Component {
   componentWillMount() {
     const url = 'https://api.github.com/repos/reactjs/react-redux/contributors';
     if (!localStorage.getItem('state')) {
