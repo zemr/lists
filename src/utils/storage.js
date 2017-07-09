@@ -1,3 +1,13 @@
+export const storageAvailable = (key = 'test') => {
+  try {
+    window.localStorage.setItem(key, '_test_');
+    window.localStorage.removeItem(key);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 export const saveStateData = (key, state) => {
   try {
     const storageData = JSON.stringify(state);

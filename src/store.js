@@ -1,7 +1,7 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import throttle from 'lodash.throttle';
-import { saveStateData, loadState } from './utils/storage';
+import { storageAvailable, saveStateData, loadState } from './utils/storage';
 
 import peopleReducer from './people/people-reducer';
 
@@ -21,17 +21,19 @@ const store = createStore(
   )
 );
 
-store.subscribe(throttle(() => {
-  saveStateData(
-    'state',
-    {
-      people: {
-        data: store.getState().people.data,
-        modified: store.getState().people.modified
+if (storageAvailable()) {
+  store.subscribe(throttle(() => {
+    saveStateData(
+      'state',
+      {
+        people: {
+          data: store.getState().people.data,
+          modified: store.getState().people.modified
+        }
       }
-    }
-  );
-  saveStateData('date', store.getState().people.modified);
-}, 1000));
+    );
+    saveStateData('date', store.getState().people.modified);
+  }, 1000));
+}
 
 export default store

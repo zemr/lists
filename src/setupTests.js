@@ -6,6 +6,12 @@ const localStorageMock = {
                     .mockReturnValueOnce(null)
                     .mockReturnValue(setupState),
   setItem: jest.fn(),
+  removeItem: jest.fn((arg) => {
+      if (arg !== 'test') {
+        throw new Error()
+      }
+    }
+  ),
   clear: jest.fn()
 };
 

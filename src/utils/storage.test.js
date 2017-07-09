@@ -1,4 +1,4 @@
-import { saveStateData, loadState } from './storage';
+import { saveStateData, loadState, storageAvailable } from './storage';
 import { storageData } from './test-helpers';
 
 describe('storage', () => {
@@ -21,6 +21,15 @@ describe('storage', () => {
     expect(loadState()).toEqual(undefined);
     // data
     expect(loadState()).toEqual(storageData);
+  });
+
+  it('checks storage availability', () => {
+    const checkStorageTest = storageAvailable('test');
+    const checkStorageBlank = storageAvailable();
+    const checkStorageError = storageAvailable('error');
+    expect(checkStorageTest).toBeTruthy();
+    expect(checkStorageBlank).toBeTruthy();
+    expect(checkStorageError).toBeFalsy();
   });
 
 });
