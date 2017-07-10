@@ -29,8 +29,17 @@ export const peopleData = [
 
 export const storageData = {
   people: {
-    data: { id: 7, login: 'seven' }
+    data: [{ id: 7, login: 'seven' }]
   }
 };
 
-export const setupState = "{\"people\":{\"data\":{\"id\":7,\"login\":\"seven\"}}}";
+export const setupState = "{\"people\":{\"data\":[{\"id\":7,\"login\":\"seven\"}]}}";
+
+// people-reducer
+export const prDate = "Sun, 09 Jul 2017 13:20:57 GMT";
+export const prUrl = 'https://path';
+export const prInitObject = {
+  headers: {
+    "If-Modified-Since": prDate
+  }
+};

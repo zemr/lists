@@ -5,6 +5,8 @@ const FETCH_SUCCESS = 'people/FETCH_SUCCESS';
 const FETCH_FAIL = 'people/FETCH_FAIL';
 const CLEAR_STATE = 'people/CLEAR_STATE';
 
+export { FETCH_BEGIN, FETCH_SUCCESS, FETCH_FAIL, CLEAR_STATE }
+
 export const fetchPeople = (url, modified) => dispatch => {
   let initObject;
   if (modified === undefined) {
