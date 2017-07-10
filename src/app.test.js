@@ -6,7 +6,7 @@ import { store } from './utils/test-helpers';
 import * as storage from './utils/storage';
 import ConnectedApp, { App } from './app';
 
-jest.mock('./people/people', () => 'People');
+jest.mock('./people/people', () => () => 'People' );
 
 describe('app', () => {
 
