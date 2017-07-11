@@ -59,7 +59,7 @@ export class People extends React.Component {
     }
 
     return (
-    <div>
+    <div className="people">
       {content}
     </div>
     )

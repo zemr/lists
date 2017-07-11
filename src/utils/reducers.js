@@ -45,7 +45,7 @@ export const fetchPeople = (url, modified, actionTypes) => dispatch => {
           )
       }
       if (response.status === 304) {
-        throw new Error('Not modified');
+        throw new Error(response.statusText);
       }
       throw new Error('Connection error');
     }
