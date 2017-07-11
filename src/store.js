@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import throttle from 'lodash.throttle';
 import { storageAvailable, saveStateData, loadState } from './utils/storage';
 
-import peopleReducer from './people/people-reducer';
+import contributorsReducer from './people/contributors-reducer';
+import subscribersReducer from './people/subscribers-reducer';
 
 const reducer = combineReducers({
-  people: peopleReducer
+  contributors: contributorsReducer,
+  subscribers: subscribersReducer
 });
 
 const persistedState = loadState();
@@ -26,13 +28,18 @@ if (storageAvailable()) {
     saveStateData(
       'state',
       {
-        people: {
-          data: store.getState().people.data,
-          modified: store.getState().people.modified
+        contributors: {
+          data: store.getState().contributors.data,
+          modified: store.getState().contributors.modified
+        },
+        subscribers: {
+          data: store.getState().subscribers.data,
+          modified: store.getState().subscribers.modified
         }
       }
     );
-    saveStateData('date', store.getState().people.modified);
+    saveStateData('contributorsDate', store.getState().contributors.modified);
+    saveStateData('subscribersDate', store.getState().subscribers.modified);
   }, 1000));
 }
 
