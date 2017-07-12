@@ -1,13 +1,18 @@
 import parse from 'parse-link-header';
 
-export const fetchPeople = (url, modified, actionTypes) => dispatch => {
+export const fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
+  const name = url.indexOf('?') < 0
+    ? url.substring(url.lastIndexOf('/')+1)
+    : url.substring(url.lastIndexOf('/')+1, url.indexOf('?'));
+  const { etag: etags } = getState()[name];
+
   let initObject;
-  if (modified === undefined) {
+  if (etag === undefined) {
     initObject = {};
   } else {
     initObject = {
       headers: {
-        "If-Modified-Since": modified
+        "If-None-Match": etag
       }
     };
   }
@@ -18,7 +23,7 @@ export const fetchPeople = (url, modified, actionTypes) => dispatch => {
     response => {
       if (response.ok) {
         const pages = parse(response.headers.get('Link'));
-        const modified = response.headers.get('Last-Modified');
+        const etag = response.headers.get('ETag');
         return response.json()
           .then(
             data => {
@@ -30,11 +35,16 @@ export const fetchPeople = (url, modified, actionTypes) => dispatch => {
               dispatch({
                 type: actionTypes.SUCCESS,
                 data,
-                modified
+                etag,
+                index: pages ? pages.next ? +pages.next.page - 2 : +pages.prev.page : 0
               });
               // testing settings
               if (pages && pages.next && +pages.next.page < 4) {
-                dispatch(fetchPeople(pages.next.url, undefined, actionTypes));
+                dispatch(fetchPeople(
+                  pages.next.url,
+                  etags.length > 0 ? etags[+pages.next.page - 1] : undefined,
+                  actionTypes
+                ));
               }
             }
           ).catch(
@@ -45,6 +55,18 @@ export const fetchPeople = (url, modified, actionTypes) => dispatch => {
           )
       }
       if (response.status === 304) {
+        if (url.indexOf('?page') < 0) {
+          dispatch(fetchPeople(url + '?page=2', etags[1], actionTypes))
+        } else {
+          const addon = url.indexOf('?page=');
+          const basicUrl = url.substring(0, addon);
+          const page = url.substring(addon + 6);
+          const index = +page;
+          const newPage = index + 1;
+          if (index < etags.length) {
+            dispatch(fetchPeople(basicUrl + '?page=' + newPage, etags[index], actionTypes))
+          }
+        }
         throw new Error(response.statusText);
       }
       throw new Error('Connection error');
@@ -59,9 +81,9 @@ export const fetchPeople = (url, modified, actionTypes) => dispatch => {
 
 const initialState = {
   data: [],
-  modified: null,
+  etag: [],
   fetching: false,
-  error: null
+  error: []
 };
 
 export const createReducer = (actionTypes) => {
@@ -75,20 +97,21 @@ export const createReducer = (actionTypes) => {
       case actionTypes.SUCCESS:
         return {
           ...state,
-          data: state.data.concat(action.data),
-          modified: action.modified,
+          data: [...state.data.slice(0, action.index), action.data, ...state.data.slice(action.index + 1)],
+          etag: [...state.etag.slice(0, action.index), action.etag, ...state.etag.slice(action.index + 1)],
           fetching: false
         };
       case actionTypes.FAIL:
         return {
           ...state,
           fetching: false,
-          error: action.error
+          error: [...state.error.slice(), action.error]
         };
       case actionTypes.CLEAR:
         return {
           ...state,
-          data: initialState.data
+          data: initialState.data,
+          error: initialState.error
         };
       default:
         return state

@@ -7,8 +7,8 @@ export const actionTypes = {
   CLEAR: 'subscribers/CLEAR_STATE'
 };
 
-export const fetchSubscribers = (url, modified) => dispatch => {
-  dispatch(fetchPeople(url, modified, actionTypes));
+export const fetchSubscribers = (url, etag) => dispatch => {
+  dispatch(fetchPeople(url, etag, actionTypes));
 };
 
 const reducer = createReducer(actionTypes);

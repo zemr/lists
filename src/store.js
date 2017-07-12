@@ -30,16 +30,18 @@ if (storageAvailable()) {
       {
         contributors: {
           data: store.getState().contributors.data,
-          modified: store.getState().contributors.modified
+          etag: store.getState().contributors.etag,
+          error: []
         },
         subscribers: {
           data: store.getState().subscribers.data,
-          modified: store.getState().subscribers.modified
+          etag: store.getState().subscribers.etag,
+          error: []
         }
       }
     );
-    saveStateData('contributorsDate', store.getState().contributors.modified);
-    saveStateData('subscribersDate', store.getState().subscribers.modified);
+    saveStateData('etagContributors', store.getState().contributors.etag);
+    saveStateData('etagSubscribers', store.getState().subscribers.etag);
   }, 1000));
 }
 

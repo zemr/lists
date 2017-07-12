@@ -1,6 +1,6 @@
 import reducer, { actionTypes, fetchContributors } from './contributors-reducer';
 import store from '../store';
-import { peopleData, rDate, rUrl } from '../utils/test-helpers';
+import { peopleData, rETag, rUrl } from '../utils/test-helpers';
 import * as reducers from '../utils/reducers';
 
 describe('contributors-reducer', () => {
@@ -9,9 +9,9 @@ describe('contributors-reducer', () => {
     expect(reducer()).toEqual(
       {
         data: [],
-        modified: null,
+        etag: [],
         fetching: false,
-        error: null
+        error: []
       }
     )
   });
@@ -21,18 +21,18 @@ describe('contributors-reducer', () => {
       reducer(
         {
           data: [],
-          modified: null,
+          etag: [],
           fetching: false,
-          error: null
+          error: []
         },
         store.dispatch({ type: actionTypes.BEGIN })
       )
     ).toEqual(
       reducer({
         data: [],
-        modified: null,
+        etag: [],
         fetching: true,
-        error: null
+        error: []
       })
     )
   });
@@ -41,19 +41,19 @@ describe('contributors-reducer', () => {
     expect(
       reducer(
         {
-          data: [{}],
-          modified: null,
+          data: [[], []],
+          etag: ['', ''],
           fetching: true,
-          error: null
+          error: []
         },
-        store.dispatch({ data: [{"id": 8, "login": "eight"}], modified: rDate, type: actionTypes.SUCCESS })
+        store.dispatch({ data: [{"id": 8, "login": "eight"}], etag: rETag, index: 1, type: actionTypes.SUCCESS })
       )
     ).toEqual(
       reducer({
-        data: [{}, {"id": 8, "login": "eight"}],
-        modified: rDate,
+        data: [[], [{"id": 8, "login": "eight"}]],
+        etag: ['', rETag],
         fetching: false,
-        error: null
+        error: []
       })
     )
   });
@@ -63,39 +63,39 @@ describe('contributors-reducer', () => {
       reducer(
         {
           data: [],
-          modified: null,
+          etag: [],
           fetching: true,
-          error: null
+          error: ['']
         },
         store.dispatch({ error: 'Malformed JSON response', type: actionTypes.FAIL })
       )
     ).toEqual(
       reducer({
         data: [],
-        modified: null,
+        etag: [],
         fetching: false,
-        error: 'Malformed JSON response'
+        error: ['', 'Malformed JSON response']
       })
     )
   });
 
-  it('clears state', () => {
+  it('clears state and errors', () => {
     expect(
       reducer(
         {
-          data: peopleData,
-          modified: rDate,
+          data: [peopleData],
+          etag: [rETag],
           fetching: false,
-          error: null
+          error: ['Connection error']
         },
         store.dispatch({ type: actionTypes.CLEAR })
       )
     ).toEqual(
       reducer({
         data: [],
-        modified: rDate,
+        etag: [rETag],
         fetching: false,
-        error: null
+        error: []
       })
     )
   });
@@ -104,9 +104,9 @@ describe('contributors-reducer', () => {
     const dispatch = jest.fn();
     //noinspection JSAnnotator
     reducers.fetchPeople = jest.fn((arg1, arg2, arg3) => { return [arg1, arg2, arg3]; });
-    fetchContributors(rUrl, rDate)(dispatch);
+    fetchContributors(rUrl, rETag)(dispatch);
     expect(dispatch).toHaveBeenCalled();
-    expect(dispatch.mock.calls[0][0]).toEqual([rUrl, rDate, actionTypes])
+    expect(dispatch.mock.calls[0][0]).toEqual([rUrl, rETag, actionTypes])
   })
 
 });

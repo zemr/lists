@@ -10,16 +10,16 @@ export const store = {
   getState: () => {
     return {
       contributors: {
-        data: [{
+        data: [[{
           id: 7,
           login: 'seven'
-        }]
+        }]]
       },
       subscribers: {
-        data: [{
+        data: [[{
           id: 8,
           login: 'eight'
-        }]
+        }]]
       }
     }
   },
@@ -27,26 +27,28 @@ export const store = {
   subscribe: () => {}
 };
 
-export const peopleData = [
+export const peopleData = [[
   {"id": 7, "login": "seven"},
   {"id": 8, "login": "eight"},
   {"id": 9, "login": "nine"}
-];
+]];
 
 export const storageData = {
   contributors: {
-    data: [{ id: 7, login: 'seven' }]
+    data: [[{ id: 7, login: 'seven' }]],
+    etag: [],
+    error: []
   }
 };
 
-export const setupState = "{\"contributors\":{\"data\":[{\"id\":7,\"login\":\"seven\"}]}}";
+export const setupState = "{\"contributors\":{\"data\":[[{\"id\":7,\"login\":\"seven\"}]],\"etag\":[],\"error\":[]}}";
 
 // reducers
-export const rDate = "Sun, 09 Jul 2017 13:20:57 GMT";
-export const rUrl = 'https://path';
+export const rETag = 'W/"c63d6c91d1d9493ec20dd90792cb8772"';
+export const rUrl = 'https://path/name';
 export const rInitObject = {
   headers: {
-    "If-Modified-Since": rDate
+    "If-None-Match": rETag
   }
 };
 export const rActionTypes = {
