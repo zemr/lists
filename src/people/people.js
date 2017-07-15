@@ -1,8 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { storageAvailable } from '../utils/storage';
 import { fetchContributors } from '../people/contributors-reducer';
 import { fetchSubscribers } from '../people/subscribers-reducer';
+
+const propTypes = {
+  type: PropTypes.string.isRequired,
+  contributors: PropTypes.array.isRequired,
+  subscribers: PropTypes.array.isRequired,
+  fetchContributors: PropTypes.func.isRequired,
+  fetchSubscribers: PropTypes.func.isRequired
+};
 
 export class People extends React.Component {
   componentWillMount() {
@@ -40,29 +49,35 @@ export class People extends React.Component {
     contributors = this.flattenArrays(contributors);
     subscribers = this.flattenArrays(subscribers);
 
-    if (contributors.length === 0) {
-      content = 'Fetching data';
-    } else if (type === "contributors") {
-      content = (
-        <div>
-          {
-            contributors.map(person => (
-              <div className="person" key={person.id}>{person.login}</div>
-            ))
-          }
-        </div>
-      );
+    if (type === "contributors") {
+      if (contributors.length === 0) {
+        content = 'Fetching data';
+      } else {
+        content = (
+          <div>
+            {
+              contributors.map(person => (
+                <div className="person" key={person.id}>{person.login}</div>
+              ))
+            }
+          </div>
+        );
+      }
     } else if (type === "subscribers") {
-      content = (
-        <div>
-          <h2>Subscribers</h2>
-          {
-            subscribers.map(person => (
-              <div className="person" key={person.id}>{person.login}</div>
-            ))
-          }
-        </div>
-      );
+      if (subscribers.length === 0) {
+        content = 'Fetching data';
+      } else {
+        content = (
+          <div>
+            <h2>Subscribers</h2>
+            {
+              subscribers.map(person => (
+                <div className="person" key={person.id}>{person.login}</div>
+              ))
+            }
+          </div>
+        );
+      }
     }
 
     return (
@@ -72,6 +87,8 @@ export class People extends React.Component {
     )
   }
 }
+
+People.propTypes = propTypes;
 
 export default connect(
   state => ({
