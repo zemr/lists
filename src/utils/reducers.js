@@ -1,12 +1,13 @@
 import parse from 'parse-link-header';
+import { rDisplayArgs } from './test-helpers';
 
-export const fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
+export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
   const name = url.indexOf('?') < 0
     ? url.substring(url.lastIndexOf('/')+1)
     : url.substring(url.lastIndexOf('/')+1, url.indexOf('?'));
   const { etag: etags } = getState()[name];
 
-  let initObject;
+  let initObject, args;
   if (etag === undefined) {
     initObject = {};
   } else {
@@ -40,11 +41,16 @@ export const fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
               });
               // testing settings
               if (pages && pages.next && +pages.next.page < 4) {
-                dispatch(fetchPeople(
+                args = [
                   pages.next.url,
                   etags.length > 0 ? etags[+pages.next.page - 1] : undefined,
                   actionTypes
-                ));
+                ];
+                /*global TESTING*/
+                if (TESTING) {
+                  rDisplayArgs(...args);
+                }
+                dispatch(fetchPeople(...args));
               }
             }
           ).catch(
@@ -56,15 +62,25 @@ export const fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
       }
       if (response.status === 304) {
         if (url.indexOf('?page') < 0) {
-          dispatch(fetchPeople(url + '?page=2', etags[1], actionTypes))
+          args = [url + '?page=2', etags[1], actionTypes];
+          /*global TESTING*/
+          if (TESTING) {
+            rDisplayArgs(...args);
+          }
+          dispatch(fetchPeople(...args));
         } else {
           const addon = url.indexOf('?page=');
           const basicUrl = url.substring(0, addon);
           const page = url.substring(addon + 6);
           const index = +page;
           const newPage = index + 1;
+          args = [basicUrl + '?page=' + newPage, etags[index], actionTypes];
           if (index < etags.length) {
-            dispatch(fetchPeople(basicUrl + '?page=' + newPage, etags[index], actionTypes))
+            /*global TESTING*/
+            if (TESTING) {
+              rDisplayArgs(...args);
+            }
+            dispatch(fetchPeople(...args));
           }
         }
         throw new Error(response.statusText);

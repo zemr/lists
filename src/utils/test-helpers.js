@@ -57,3 +57,4 @@ export const rActionTypes = {
   FAIL: 'test/FETCH_FAIL',
   CLEAR: 'test/CLEAR_STATE'
 };
+export let rDisplayArgs = (args) => args;

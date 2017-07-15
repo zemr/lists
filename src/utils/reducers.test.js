@@ -1,5 +1,7 @@
 import { fetchPeople } from './reducers';
+import * as helpers from './test-helpers';
 import { rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
+global.TESTING = true;
 
 describe('reducers', () => {
 
@@ -138,6 +140,62 @@ describe('reducers', () => {
     });
   });
 
+  it('calls new fetching with proper arguments (etag exists)', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    window.fetch = jest.fn(
+      () => Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve('data'),
+        headers: {
+          get: (arg) => {
+            if (arg === 'ETag') {
+              return rETag;
+            } else if (arg === 'Link') {
+              return '<https://path/name?page=3>; rel="next"'
+            }
+          }
+        }
+      })
+    );
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchPeople(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[2][0]).toBeInstanceOf(Function);
+      expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=3', 'c', rActionTypes]);
+    });
+  });
+
+  it('calls new fetching with proper arguments (etag doesn\'t exist)', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    window.fetch = jest.fn(
+      () => Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve('data'),
+        headers: {
+          get: (arg) => {
+            if (arg === 'ETag') {
+              return rETag;
+            } else if (arg === 'Link') {
+              return '<https://path/name?page=3>; rel="next"'
+            }
+          }
+        }
+      })
+    );
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchPeople(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[2][0]).toBeInstanceOf(Function);
+      expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=3', undefined, rActionTypes]);
+    });
+  });
+
   it('dispatches FAIL action when promise value wasn\'t returned', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => ({ name: { etag: [] } }));
@@ -193,6 +251,58 @@ describe('reducers', () => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
       expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
+  it('checks second page of results for new data', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchPeople(rUrl, 'a', rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
+      expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=2', 'b', rActionTypes]);
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
+  it('checks another page of results for new data', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchPeople(rUrl + '?page=3', 'c', rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
+      expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=4', 'd', rActionTypes]);
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
+  it('doesn\'t check for new data after last page of results', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchPeople(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });
   });
 

@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 import { store } from './utils/test-helpers';
 import ConnectedApp from './app';
 
-jest.mock('./people/people', () => () => 'People' );
-
 describe('app', () => {
 
   it('renders without crashing', () => {
