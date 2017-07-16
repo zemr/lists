@@ -4,6 +4,79 @@ import { connect } from 'react-redux';
 import { storageAvailable } from '../utils/storage';
 import { fetchContributors } from '../people/contributors-reducer';
 import { fetchSubscribers } from '../people/subscribers-reducer';
+import styled from 'styled-components';
+
+const PersonList = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 1100px;  
+`;
+
+const PersonListWrapper = styled(PersonList)`
+  @media (max-width: 649px) {
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+const Contributor = styled.div`
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  height: 50px;
+  padding: 7px 7px 5px;
+  margin: 5px;
+  background-color: #d6b142;
+  color: #602a1e;
+  word-break: break-all;
+    
+  @media (max-width: 349px) {
+    width: 125px;
+  }
+  
+  @media (min-width: 350px) and (max-width: 649px) {
+   width: 145px;
+  }
+  
+  @media (min-width: 650px) {
+    width: 180px;
+    height: 70px;
+    padding: 10px 10px 5px;
+  }
+  
+  span:nth-child(2) {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    border-radius: 50%;
+    background-color: #c99836;
+    line-height: 30px;
+    text-align: center;
+    
+    @media (min-width: 650px) {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+`;
+
+const Subscriber = styled.div`
+  padding: 5px 10px;
+  margin: 5px;  
+  background-color: #d84d38;
+  color: #fff2bf;
+  
+  &:nth-child(4n) {
+    background-color: #b2112f;
+  }
+  
+  &:nth-child(7n) {
+    background-color: #e07f23;
+  }
+`;
 
 const propTypes = {
   type: PropTypes.string.isRequired,
@@ -54,13 +127,16 @@ export class People extends React.Component {
         content = 'Fetching data';
       } else {
         content = (
-          <div>
+          <PersonListWrapper>
             {
               contributors.map(person => (
-                <div className="person" key={person.id}>{person.login}</div>
+                <Contributor key={person.id}>
+                  <span>{person.login}</span>
+                  <span>{person.contributions}</span>
+                </Contributor>
               ))
             }
-          </div>
+          </PersonListWrapper>
         );
       }
     } else if (type === "subscribers") {
@@ -68,20 +144,19 @@ export class People extends React.Component {
         content = 'Fetching data';
       } else {
         content = (
-          <div>
-            <h2>Subscribers</h2>
+          <PersonList>
             {
               subscribers.map(person => (
-                <div className="person" key={person.id}>{person.login}</div>
+                <Subscriber key={person.id}>{person.login}</Subscriber>
               ))
             }
-          </div>
+          </PersonList>
         );
       }
     }
 
     return (
-    <div className="people">
+    <div>
       {content}
     </div>
     )
