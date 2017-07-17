@@ -16,8 +16,7 @@ describe('people: contributors', () => {
     // third call ("null" value)
     TestUtils.renderIntoDocument(
       <People
-        contributors={peopleData}
-        subscribers={[]}
+        data={peopleData}
         type="contributors"
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
@@ -31,8 +30,7 @@ describe('people: contributors', () => {
     // fifth-eighth calls (some values)
     TestUtils.renderIntoDocument(
       <People
-        contributors={peopleData}
-        subscribers={[]}
+        data={peopleData}
         type="contributors"
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
@@ -51,8 +49,7 @@ describe('people: contributors', () => {
     storage.storageAvailable = jest.fn(() => false);
     TestUtils.renderIntoDocument(
       <People
-        contributors={peopleData}
-        subscribers={[]}
+        data={peopleData}
         type="contributors"
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
@@ -65,28 +62,26 @@ describe('people: contributors', () => {
   it('renders list', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People
-        contributors={peopleData}
-        subscribers={[]}
+        data={peopleData}
         type="contributors"
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
     );
-    const divs = TestUtils.scryRenderedDOMComponentsWithClass(peopleList, 'person');
-    expect(divs.length).toBe(3);
+    const spans = TestUtils.scryRenderedDOMComponentsWithTag(peopleList, 'span');
+    expect(spans.length).toBe(6);
   });
 
   it('doesn\'t render list when there is no data', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={[]}
+        data={[]}
         type="contributors"
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
     );
-    const mainDiv = TestUtils.findRenderedDOMComponentWithClass(peopleList, 'people');
+    const mainDiv = TestUtils.findRenderedDOMComponentWithTag(peopleList, 'div');
     expect(mainDiv.textContent).toBe('Fetching data');
   });
 

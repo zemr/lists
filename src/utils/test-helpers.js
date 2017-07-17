@@ -27,11 +27,11 @@ export const store = {
   subscribe: () => {}
 };
 
-export const peopleData = [[
+export const peopleData = [
   {"id": 7, "login": "seven"},
   {"id": 8, "login": "eight"},
   {"id": 9, "login": "nine"}
-]];
+];
 
 export const storageData = {
   contributors: {
@@ -58,3 +58,11 @@ export const rActionTypes = {
   CLEAR: 'test/CLEAR_STATE'
 };
 export let rDisplayArgs = (args) => args;
+
+//pagination
+export const Child = () => (<div>child</div>);
+export const paginationData = [[
+  {"id": 7, "login": "seven"},
+  {"id": 8, "login": "eight"},
+  {"id": 9, "login": "nine"}
+]];

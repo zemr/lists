@@ -4,8 +4,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import Sidebar from './sidebar/sidebar';
 import People from './people/people';
+import Pagination from './shared/pagination';
 
-// language=SCSS prefix=dummy{ suffix=}
 injectGlobal`
   body {
     margin: 8px;
@@ -26,20 +26,20 @@ injectGlobal`
 `;
 
 const StyledApp = styled.div`
-  display: flex;  
-  overflow: hidden;
+  display: flex;   
   
   @media (max-width: 649px) {
     flex-direction: column; 
   }  
   
   @media (min-width: 650px) {
-    height: 760px;
+    min-height: 760px;
   }
 `;
 
 const Main = styled.div`
   flex: 1;
+  max-width: 1080px;
 `;
 
 const Home = styled.h2`
@@ -55,8 +55,14 @@ export class App extends React.Component {
 
           <Main>
             <Route exact path="/" component={() => <Home>Home</Home>} />
-            <Route path="/contributors" render={() => <People type="contributors" />} />
-            <Route path="/subscribers" render={() => <People type="subscribers" />} />
+            <Route
+              path="/contributors"
+              render={() => <Pagination type="contributors" perPage={40}><People /></Pagination>}
+            />
+            <Route
+              path="/subscribers"
+              render={() => <Pagination type="subscribers" perPage={110}><People /></Pagination>}
+            />
           </Main>
         </StyledApp>
       </BrowserRouter>

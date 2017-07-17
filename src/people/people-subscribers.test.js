@@ -16,8 +16,7 @@ describe('people: subscribers', () => {
     // third call ("null" value)
     TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={peopleData}
+        data={peopleData}
         type="subscribers"
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
@@ -31,8 +30,7 @@ describe('people: subscribers', () => {
     // fifth-eighth calls (some values)
     TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={peopleData}
+        data={peopleData}
         type="subscribers"
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
@@ -50,8 +48,7 @@ describe('people: subscribers', () => {
     const storageSpy = jest.spyOn(storage, 'storageAvailable').mockImplementation(() => false);
     TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={peopleData}
+        data={peopleData}
         type="subscribers"
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
@@ -65,28 +62,28 @@ describe('people: subscribers', () => {
   it('renders list', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={peopleData}
+        data={peopleData}
         type="subscribers"
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
     );
-    const divs = TestUtils.scryRenderedDOMComponentsWithClass(peopleList, 'person');
-    expect(divs.length).toBe(3);
+    const divs = TestUtils.scryRenderedDOMComponentsWithTag(peopleList, 'div');
+    expect(divs[2].textContent).toBe('seven');
+    expect(divs[3].textContent).toBe('eight');
+    expect(divs[4].textContent).toBe('nine');
   });
 
   it('doesn\'t render list when there is no data', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People
-        contributors={[]}
-        subscribers={[]}
+        data={[]}
         type="subscribers"
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
     );
-    const mainDiv = TestUtils.findRenderedDOMComponentWithClass(peopleList, 'people');
+    const mainDiv = TestUtils.findRenderedDOMComponentWithTag(peopleList, 'div');
     expect(mainDiv.textContent).toBe('Fetching data');
   });
 

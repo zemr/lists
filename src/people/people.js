@@ -9,7 +9,6 @@ import styled from 'styled-components';
 const PersonList = styled.div`
   display: flex;
   flex-flow: row wrap;
-  max-width: 1100px;  
 `;
 
 const PersonListWrapper = styled(PersonList)`
@@ -76,12 +75,15 @@ const Subscriber = styled.div`
   &:nth-child(7n) {
     background-color: #e07f23;
   }
+  
+  @media (min-width: 1200px) {
+    padding: 6px 10px;
+  }
 `;
 
 const propTypes = {
   type: PropTypes.string.isRequired,
-  contributors: PropTypes.array.isRequired,
-  subscribers: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   fetchContributors: PropTypes.func.isRequired,
   fetchSubscribers: PropTypes.func.isRequired
 };
@@ -111,25 +113,18 @@ export class People extends React.Component {
     }
   }
 
-  flattenArrays(array) {
-    return [].concat.apply([], array);
-  }
-
   render() {
-    let { contributors, subscribers, type } = this.props;
+    let { data, type } = this.props;
     let content;
 
-    contributors = this.flattenArrays(contributors);
-    subscribers = this.flattenArrays(subscribers);
-
-    if (type === "contributors") {
-      if (contributors.length === 0) {
-        content = 'Fetching data';
-      } else {
+    if (data.length === 0) {
+      content = 'Fetching data';
+    } else {
+      if (type === "contributors") {
         content = (
           <PersonListWrapper>
             {
-              contributors.map(person => (
+              data.map(person => (
                 <Contributor key={person.id}>
                   <span>{person.login}</span>
                   <span>{person.contributions}</span>
@@ -138,15 +133,11 @@ export class People extends React.Component {
             }
           </PersonListWrapper>
         );
-      }
-    } else if (type === "subscribers") {
-      if (subscribers.length === 0) {
-        content = 'Fetching data';
-      } else {
+      } else if (type === "subscribers") {
         content = (
           <PersonList>
             {
-              subscribers.map(person => (
+              data.map(person => (
                 <Subscriber key={person.id}>{person.login}</Subscriber>
               ))
             }
@@ -166,10 +157,7 @@ export class People extends React.Component {
 People.propTypes = propTypes;
 
 export default connect(
-  state => ({
-    contributors: state.contributors.data,
-    subscribers: state.subscribers.data
-  }),
+  state => ({}),
   dispatch => ({
     fetchContributors: (url, etag) => dispatch(fetchContributors(url, etag)),
     fetchSubscribers: (url, etag) => dispatch(fetchSubscribers(url, etag))
