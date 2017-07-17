@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 import throttle from 'lodash.throttle';
 import { storageAvailable, saveStateData, loadState } from './utils/storage';
 
-import contributorsReducer from './people/contributors-reducer';
-import subscribersReducer from './people/subscribers-reducer';
+import contributorsReducer from './people/reducer-contributors';
+import subscribersReducer from './people/reducer-subscribers';
 
 const reducer = combineReducers({
   contributors: contributorsReducer,

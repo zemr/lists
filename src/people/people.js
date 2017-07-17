@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { storageAvailable } from '../utils/storage';
-import { fetchContributors } from '../people/contributors-reducer';
-import { fetchSubscribers } from '../people/subscribers-reducer';
+import { fetchContributors } from './reducer-contributors';
+import { fetchSubscribers } from './reducer-subscribers';
 import styled from 'styled-components';
 
 const PersonList = styled.div`

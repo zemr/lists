@@ -1,8 +1,8 @@
 import React from 'react';
 import TestUtils from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
-import { peopleData, store } from '../utils/test-helpers';
-import ConnectedPeople from './people';
+import { peopleData, store } from '../../utils/test-helpers';
+import ConnectedPeople from '../people';
 
 describe('people', () => {
 

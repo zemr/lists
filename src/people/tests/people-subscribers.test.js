@@ -1,8 +1,8 @@
 import React from 'react';
 import TestUtils from 'react-dom/test-utils';
-import { peopleData } from '../utils/test-helpers';
-import * as storage from '../utils/storage';
-import { People } from './people';
+import { peopleData } from '../../utils/test-helpers';
+import * as storage from '../../utils/storage';
+import { People } from '../people';
 
 describe('people: subscribers', () => {
 

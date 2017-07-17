@@ -1,7 +1,7 @@
-import reducer, { actionTypes, fetchContributors } from './contributors-reducer';
-import store from '../store';
-import { peopleData, rETag, rUrl } from '../utils/test-helpers';
-import * as reducers from '../utils/reducers';
+import reducer, { actionTypes, fetchContributors } from '../reducer-contributors';
+import store from '../../store';
+import { peopleData, rETag, rUrl } from '../../utils/test-helpers';
+import * as reducers from '../../utils/reducers';
 
 describe('contributors-reducer', () => {
 
