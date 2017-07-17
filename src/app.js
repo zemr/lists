@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import styled, { injectGlobal } from 'styled-components';
 import Sidebar from './sidebar/sidebar';
+import Home from './home/home';
 import People from './people/people';
 import Pagination from './shared/pagination';
 
@@ -42,10 +43,6 @@ const Main = styled.div`
   max-width: 1080px;
 `;
 
-const Home = styled.h2`
-  color: #c7813d;
-`;
-
 export class App extends React.Component {
   render() {
     return (
@@ -54,7 +51,7 @@ export class App extends React.Component {
           <Sidebar />
 
           <Main>
-            <Route exact path="/" component={() => <Home>Home</Home>} />
+            <Route exact path="/" component={Home} />
             <Route
               path="/contributors"
               render={() => <Pagination type="contributors" perPage={40}><People /></Pagination>}

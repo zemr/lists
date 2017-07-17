@@ -11,7 +11,7 @@ const PersonList = styled.div`
   flex-flow: row wrap;
 `;
 
-const PersonListWrapper = styled(PersonList)`
+const PersonListCenter = styled(PersonList)`
   @media (max-width: 649px) {
     display: flex;
     justify-content: center;
@@ -122,7 +122,7 @@ export class People extends React.Component {
     } else {
       if (type === "contributors") {
         content = (
-          <PersonListWrapper>
+          <PersonListCenter>
             {
               data.map(person => (
                 <Contributor key={person.id}>
@@ -131,7 +131,7 @@ export class People extends React.Component {
                 </Contributor>
               ))
             }
-          </PersonListWrapper>
+          </PersonListCenter>
         );
       } else if (type === "subscribers") {
         content = (
