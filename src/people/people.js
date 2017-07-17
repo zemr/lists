@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { storageAvailable } from '../utils/storage';
 import { fetchContributors } from './reducer-contributors';
 import { fetchSubscribers } from './reducer-subscribers';
+import Loader from '../shared/loader';
 import styled from 'styled-components';
 
 const PersonList = styled.div`
@@ -118,7 +119,7 @@ export class People extends React.Component {
     let content;
 
     if (data.length === 0) {
-      content = 'Fetching data';
+      content = <Loader />;
     } else {
       if (type === "contributors") {
         content = (

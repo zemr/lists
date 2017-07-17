@@ -83,8 +83,9 @@ describe('people: subscribers', () => {
         fetchSubscribers={() => {}}
       />
     );
-    const mainDiv = TestUtils.findRenderedDOMComponentWithTag(peopleList, 'div');
-    expect(mainDiv.textContent).toBe('Fetching data');
+    const divs = TestUtils.scryRenderedDOMComponentsWithTag(peopleList, 'div');
+    const loader = divs[1].outerHTML;
+    expect(loader.indexOf('Fetching data') > 0).toBeTruthy();
   });
 
 });

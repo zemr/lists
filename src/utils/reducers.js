@@ -39,8 +39,7 @@ export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
                 etag,
                 index: pages ? pages.next ? +pages.next.page - 2 : +pages.prev.page : 0
               });
-              // testing settings
-              if (pages && pages.next && +pages.next.page < 4) {
+              if (pages && pages.next) {
                 args = [
                   pages.next.url,
                   etags.length > 0 ? etags[+pages.next.page - 1] : undefined,
