@@ -5,10 +5,12 @@ import { storageAvailable, saveStateData, loadState } from './utils/storage';
 
 import contributorsReducer from './people/reducer-contributors';
 import subscribersReducer from './people/reducer-subscribers';
+import issuesReducer from './issues/reducer-issues';
 
 const reducer = combineReducers({
   contributors: contributorsReducer,
-  subscribers: subscribersReducer
+  subscribers: subscribersReducer,
+  issues: issuesReducer
 });
 
 const persistedState = loadState();
@@ -37,11 +39,17 @@ if (storageAvailable()) {
           data: store.getState().subscribers.data,
           etag: store.getState().subscribers.etag,
           error: []
+        },
+        issues: {
+          data: store.getState().issues.data,
+          etag: store.getState().issues.etag,
+          error: []
         }
       }
     );
     saveStateData('etagContributors', store.getState().contributors.etag);
     saveStateData('etagSubscribers', store.getState().subscribers.etag);
+    saveStateData('etagIssues', store.getState().issues.etag);
   }, 1000));
 }
 

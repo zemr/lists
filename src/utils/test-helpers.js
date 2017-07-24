@@ -20,6 +20,12 @@ export const store = {
           id: 8,
           login: 'eight'
         }]]
+      },
+      issues: {
+        data: [[{
+          number: 9,
+          title: 'nine'
+        }]]
       }
     }
   },
@@ -66,3 +72,10 @@ export const paginationData = [[
   {"id": 8, "login": "eight"},
   {"id": 9, "login": "nine"}
 ]];
+
+//issues
+export const issuesData = [
+  {"number": 7, "title": "seven"},
+  {"number": 8, "title": "eight"},
+  {"number": 9, "title": "nine"}
+];

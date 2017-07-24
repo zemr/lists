@@ -1,7 +1,7 @@
 import parse from 'parse-link-header';
 import { rDisplayArgs } from './test-helpers';
 
-export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
+export let fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
   const name = url.indexOf('?') < 0
     ? url.substring(url.lastIndexOf('/')+1)
     : url.substring(url.lastIndexOf('/')+1, url.indexOf('?'));
@@ -49,7 +49,7 @@ export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
                 if (TESTING) {
                   rDisplayArgs(...args);
                 }
-                dispatch(fetchPeople(...args));
+                dispatch(fetchData(...args));
               }
             }
           ).catch(
@@ -66,7 +66,7 @@ export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
           if (TESTING) {
             rDisplayArgs(...args);
           }
-          dispatch(fetchPeople(...args));
+          dispatch(fetchData(...args));
         } else {
           const addon = url.indexOf('?page=');
           const basicUrl = url.substring(0, addon);
@@ -79,7 +79,7 @@ export let fetchPeople = (url, etag, actionTypes) => (dispatch, getState) => {
             if (TESTING) {
               rDisplayArgs(...args);
             }
-            dispatch(fetchPeople(...args));
+            dispatch(fetchData(...args));
           }
         }
         throw new Error(response.statusText);

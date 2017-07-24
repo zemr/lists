@@ -1,4 +1,4 @@
-import { fetchPeople } from './reducers';
+import { fetchData } from './reducers';
 import * as helpers from './test-helpers';
 import { rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
 global.TESTING = true;
@@ -8,7 +8,7 @@ describe('reducers', () => {
   it('dispatches BEGIN action', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => ({ name: { etag: [] } }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState);
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
   });
@@ -17,12 +17,12 @@ describe('reducers', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => ({ name: { etag: [] } }));
     window.fetch = jest.fn(() => Promise.resolve());
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState);
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
     expect(fetch).toHaveBeenCalled();
     expect(fetch.mock.calls[0][0]).toBe(rUrl);
     expect(fetch.mock.calls[0][1]).toEqual({});
 
-    fetchPeople(rUrl, rETag, rActionTypes)(dispatch, getState);
+    fetchData(rUrl, rETag, rActionTypes)(dispatch, getState);
     expect(fetch.mock.calls[1][0]).toBe(rUrl);
     expect(fetch.mock.calls[1][1]).toEqual(rInitObject);
   });
@@ -43,7 +43,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
     });
@@ -65,7 +65,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ type: rActionTypes.CLEAR });
       expect(dispatch.mock.calls[2][0]).toEqual({ data: 'data', etag: rETag, index: 0, type: rActionTypes.SUCCESS });
@@ -88,7 +88,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ type: rActionTypes.CLEAR });
       expect(dispatch.mock.calls[2][0]).toEqual({ data: 'data', etag: rETag, index: 0, type: rActionTypes.SUCCESS });
@@ -111,7 +111,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 2, type: rActionTypes.SUCCESS });
     });
@@ -133,7 +133,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
       expect(dispatch.mock.calls[2][0]).toBeInstanceOf(Function);
@@ -160,7 +160,7 @@ describe('reducers', () => {
     );
     helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
 
-    fetchPeople(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
       expect(dispatch.mock.calls[2][0]).toBeInstanceOf(Function);
@@ -188,7 +188,7 @@ describe('reducers', () => {
     );
     helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
 
-    fetchPeople(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, rETag, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 1, type: rActionTypes.SUCCESS });
       expect(dispatch.mock.calls[2][0]).toBeInstanceOf(Function);
@@ -200,7 +200,7 @@ describe('reducers', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => ({ name: { etag: [] } }));
     window.fetch = jest.fn(() => Promise.resolve({}));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1]).toEqual([{ error: 'Connection error', type: rActionTypes.FAIL }]);
     });
@@ -222,7 +222,7 @@ describe('reducers', () => {
         }
       }
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls.length).toBe(2);
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1]).toEqual([{ error: 'Malformed JSON response', type: rActionTypes.FAIL }]);
@@ -233,7 +233,7 @@ describe('reducers', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => ({ name: { etag: [] } }));
     window.fetch = jest.fn(() => Promise.reject({ message: 'Not Found' }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Found', type: rActionTypes.FAIL }]);
     });
@@ -247,7 +247,7 @@ describe('reducers', () => {
       status: 304,
       statusText: 'Not Modified'
     }));
-    fetchPeople(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
       expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
@@ -264,7 +264,7 @@ describe('reducers', () => {
     }));
     helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
 
-    fetchPeople(rUrl, 'a', rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl, 'a', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
       expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=2', 'b', rActionTypes]);
@@ -282,7 +282,7 @@ describe('reducers', () => {
     }));
     helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
 
-    fetchPeople(rUrl + '?page=3', 'c', rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl + '?page=3', 'c', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1][0]).toBeInstanceOf(Function);
       expect(helpers.rDisplayArgs.mock.calls[0]).toEqual(['https://path/name?page=4', 'd', rActionTypes]);
@@ -300,7 +300,7 @@ describe('reducers', () => {
     }));
     helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
 
-    fetchPeople(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
+    fetchData(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
       expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });

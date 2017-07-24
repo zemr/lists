@@ -1,9 +1,9 @@
-import reducer, { actionTypes, fetchContributors } from '../reducer-contributors';
-import store from '../../store';
-import { peopleData, rETag, rUrl } from '../../utils/test-helpers';
-import * as reducers from '../../utils/reducers';
+import reducer, { actionTypes, fetchIssues } from './reducer-issues';
+import store from '../store';
+import { issuesData, rETag, rUrl } from '../utils/test-helpers';
+import * as reducers from '../utils/reducers';
 
-describe('reducer-contributors', () => {
+describe('reducer-issues', () => {
 
   it('returns initial state', () => {
     expect(reducer()).toEqual(
@@ -46,11 +46,11 @@ describe('reducer-contributors', () => {
           fetching: true,
           error: []
         },
-        store.dispatch({ data: [{"id": 8, "login": "eight"}], etag: rETag, index: 1, type: actionTypes.SUCCESS })
+        store.dispatch({ data: [{"number": 8, "title": "eight"}], etag: rETag, index: 1, type: actionTypes.SUCCESS })
       )
     ).toEqual(
       reducer({
-        data: [[], [{"id": 8, "login": "eight"}]],
+        data: [[], [{"number": 8, "title": "eight"}]],
         etag: ['', rETag],
         fetching: false,
         error: []
@@ -83,7 +83,7 @@ describe('reducer-contributors', () => {
     expect(
       reducer(
         {
-          data: [peopleData],
+          data: [issuesData],
           etag: [rETag],
           fetching: false,
           error: ['Connection error']
@@ -104,7 +104,7 @@ describe('reducer-contributors', () => {
     const dispatch = jest.fn();
     //noinspection JSAnnotator
     reducers.fetchData = jest.fn((arg1, arg2, arg3) => { return [arg1, arg2, arg3]; });
-    fetchContributors(rUrl, rETag)(dispatch);
+    fetchIssues(rUrl, rETag)(dispatch);
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls[0][0]).toEqual([rUrl, rETag, actionTypes])
   })

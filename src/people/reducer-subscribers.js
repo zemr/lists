@@ -1,4 +1,4 @@
-import { fetchPeople, createReducer } from '../utils/reducers';
+import { fetchData, createReducer } from '../utils/reducers';
 
 export const actionTypes = {
   BEGIN: 'subscribers/FETCH_BEGIN',
@@ -8,7 +8,7 @@ export const actionTypes = {
 };
 
 export const fetchSubscribers = (url, etag) => dispatch => {
-  dispatch(fetchPeople(url, etag, actionTypes));
+  dispatch(fetchData(url, etag, actionTypes));
 };
 
 const reducer = createReducer(actionTypes);

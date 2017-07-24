@@ -3,7 +3,7 @@ import store from '../../store';
 import { peopleData, rETag, rUrl } from '../../utils/test-helpers';
 import * as reducers from '../../utils/reducers';
 
-describe('contributors-reducer', () => {
+describe('reducer-subscribers', () => {
 
   it('returns initial state', () => {
     expect(reducer()).toEqual(
@@ -103,7 +103,7 @@ describe('contributors-reducer', () => {
   it('calls fetching function with proper arguments', () => {
     const dispatch = jest.fn();
     //noinspection JSAnnotator
-    reducers.fetchPeople = jest.fn((arg1, arg2, arg3) => { return [arg1, arg2, arg3]; });
+    reducers.fetchData = jest.fn((arg1, arg2, arg3) => { return [arg1, arg2, arg3]; });
     fetchSubscribers(rUrl, rETag)(dispatch);
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls[0][0]).toEqual([rUrl, rETag, actionTypes])

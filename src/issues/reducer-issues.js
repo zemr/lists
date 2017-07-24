@@ -1,13 +1,13 @@
 import { fetchData, createReducer } from '../utils/reducers';
 
 export const actionTypes = {
-  BEGIN: 'contributors/FETCH_BEGIN',
-  SUCCESS: 'contributors/FETCH_SUCCESS',
-  FAIL: 'contributors/FETCH_FAIL',
-  CLEAR: 'contributors/CLEAR_STATE'
+  BEGIN: 'issues/FETCH_BEGIN',
+  SUCCESS: 'issues/FETCH_SUCCESS',
+  FAIL: 'issues/FETCH_FAIL',
+  CLEAR: 'issues/CLEAR_STATE'
 };
 
-export const fetchContributors = (url, etag) => dispatch => {
+export const fetchIssues = (url, etag) => dispatch => {
   dispatch(fetchData(url, etag, actionTypes));
 };
 
