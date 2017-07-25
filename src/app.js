@@ -5,6 +5,7 @@ import styled, { injectGlobal } from 'styled-components';
 import Sidebar from './sidebar/sidebar';
 import Home from './home/home';
 import People from './people/people';
+import Issues from './issues/issues';
 import Pagination from './shared/pagination';
 
 injectGlobal`
@@ -59,6 +60,10 @@ export class App extends React.Component {
             <Route
               path="/subscribers"
               render={() => <Pagination type="subscribers" perPage={110}><People /></Pagination>}
+            />
+            <Route
+              path="/issues"
+              render={() => <Pagination type="issues" perPage={10}><Issues /></Pagination>}
             />
           </Main>
         </StyledApp>

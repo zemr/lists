@@ -37,6 +37,7 @@ const Sidebar = () => (
       <li><StyledLink to="/">Home</StyledLink></li>
       <li><StyledLink to="/contributors">Contributors</StyledLink></li>
       <li><StyledLink to="/subscribers">Subscribers</StyledLink></li>
+      <li><StyledLink to="/issues">Issues</StyledLink></li>
     </List>
   </StyledSidebar>
 );

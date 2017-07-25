@@ -1,11 +1,5 @@
 import React from 'react';
 
-export class Wrapper extends React.Component {
-  render() {
-    return this.props.children;
-  }
-}
-
 export const store = {
   getState: () => {
     return {
@@ -24,7 +18,12 @@ export const store = {
       issues: {
         data: [[{
           number: 9,
-          title: 'nine'
+          title: 'nine',
+          body: 'nine',
+          created_at: '2017-06-20T12:17:08Z',
+          user: {
+            login: 'nine'
+          }
         }]]
       }
     }
@@ -79,3 +78,11 @@ export const issuesData = [
   {"number": 8, "title": "eight"},
   {"number": 9, "title": "nine"}
 ];
+
+//issue
+export const issueDetails = {
+  title: 'issue title',
+  body: 'issue body',
+  created_at: '2017-06-20T12:17:08Z',
+  user: { login: 'author'}
+};

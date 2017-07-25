@@ -131,6 +131,7 @@ Pagination.propTypes = propTypes;
 export default connect(
   state => ({
     contributors: state.contributors.data,
-    subscribers: state.subscribers.data
+    subscribers: state.subscribers.data,
+    issues: state.issues.data
   })
 )(Pagination)

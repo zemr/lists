@@ -115,7 +115,7 @@ export class People extends React.Component {
   }
 
   render() {
-    let { data, type } = this.props;
+    const { data, type } = this.props;
     let content;
 
     if (data.length === 0) {
