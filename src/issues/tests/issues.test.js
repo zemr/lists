@@ -24,6 +24,7 @@ describe('issues', () => {
     TestUtils.renderIntoDocument(
       <Issues
         data={issuesData}
+        url=""
         fetchIssues={mockFn}
       />
     );
@@ -36,6 +37,7 @@ describe('issues', () => {
     TestUtils.renderIntoDocument(
       <Issues
         data={issuesData}
+        url=""
         fetchIssues={mockFn}
       />
     );
@@ -53,6 +55,7 @@ describe('issues', () => {
     TestUtils.renderIntoDocument(
       <Issues
         data={issuesData}
+        url=""
         fetchIssues={mockFn}
       />
     );
@@ -64,6 +67,7 @@ describe('issues', () => {
     const issuesList = TestUtils.renderIntoDocument(
       <Issues
         data={issuesData}
+        url=""
         fetchIssues={() => {}}
       />
     );
@@ -77,6 +81,7 @@ describe('issues', () => {
     const issuesList = TestUtils.renderIntoDocument(
       <Issues
         data={[]}
+        url=""
         fetchIssues={() => {}}
       />
     );
@@ -90,7 +95,7 @@ describe('issues', () => {
     ReactDOM.render(
       (
         <Provider store={store}>
-          <ConnectedIssues data={issuesData} />
+          <ConnectedIssues data={issuesData} url="" />
         </Provider>
       ), div);
   });

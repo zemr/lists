@@ -6,16 +6,34 @@ export let fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
     ? url.substring(url.lastIndexOf('/')+1)
     : url.substring(url.lastIndexOf('/')+1, url.indexOf('?'));
   const { etag: etags } = getState()[name];
+  const { auth } = getState().repository;
 
   let initObject, args;
   if (etag === undefined) {
-    initObject = {};
+    if (auth.length === 0) {
+      initObject = {};
+    } else {
+      initObject = {
+        headers: {
+          "Authorization": "Basic " + auth
+        }
+      };
+    }
   } else {
-    initObject = {
-      headers: {
-        "If-None-Match": etag
-      }
-    };
+    if (auth.length === 0) {
+      initObject = {
+        headers: {
+          "If-None-Match": etag
+        }
+      };
+    } else {
+      initObject = {
+        headers: {
+          "If-None-Match": etag,
+          "Authorization": "Basic " + auth
+        }
+      };
+    }
   }
 
   dispatch({ type: actionTypes.BEGIN });
@@ -129,7 +147,7 @@ export const createReducer = (actionTypes) => {
           error: initialState.error
         };
       default:
-        return state
+        return state;
     }
   }
 };

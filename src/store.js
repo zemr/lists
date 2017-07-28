@@ -6,11 +6,13 @@ import { storageAvailable, saveStateData, loadState } from './utils/storage';
 import contributorsReducer from './people/reducer-contributors';
 import subscribersReducer from './people/reducer-subscribers';
 import issuesReducer from './issues/reducer-issues';
+import repositoryReducer from './home/reducer-repository';
 
 const reducer = combineReducers({
   contributors: contributorsReducer,
   subscribers: subscribersReducer,
-  issues: issuesReducer
+  issues: issuesReducer,
+  repository: repositoryReducer
 });
 
 const persistedState = loadState();

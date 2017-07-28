@@ -13,6 +13,7 @@ describe('people', () => {
           <ConnectedPeople
             data={peopleData}
             type="contributors"
+            url=""
           />
         </Provider>
       )
@@ -24,6 +25,7 @@ describe('people', () => {
           <ConnectedPeople
             data={peopleData}
             type="subscribers"
+            url=""
           />
         </Provider>
       )

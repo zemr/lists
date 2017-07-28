@@ -25,6 +25,10 @@ export const store = {
             login: 'nine'
           }
         }]]
+      },
+      repository: {
+        url: '',
+        auth: ''
       }
     }
   },
@@ -63,6 +67,22 @@ export const rActionTypes = {
   CLEAR: 'test/CLEAR_STATE'
 };
 export let rDisplayArgs = (args) => args;
+export const rStore = {
+  name: {
+    etag: []
+  },
+  repository: {
+    auth: ''
+  }
+};
+export const rStoreETags = {
+  name: {
+    etag: ['a', 'b', 'c', 'd']
+  },
+  repository: {
+    auth: ''
+  }
+};
 
 //pagination
 export const Child = () => (<div>child</div>);

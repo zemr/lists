@@ -112,10 +112,10 @@ export class Pagination extends React.Component {
   }
 
   render() {
-    const type = this.props.type;
     const props = {};
-    props['type'] = type;
+    props['type'] = this.props.type;
     props['data'] = this.createDataChunk();
+    props['url'] = this.props.url;
 
     return (
       <PaginationWrapper>
@@ -132,6 +132,7 @@ export default connect(
   state => ({
     contributors: state.contributors.data,
     subscribers: state.subscribers.data,
-    issues: state.issues.data
+    issues: state.issues.data,
+    url: state.repository.url
   })
 )(Pagination)

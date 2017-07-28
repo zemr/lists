@@ -14,12 +14,18 @@ const IssuesList = styled.div`
 
 const propTypes = {
   data: PropTypes.array.isRequired,
+  url: PropTypes.string.isRequired,
   fetchIssues: PropTypes.func.isRequired
 };
 
 export class Issues extends React.Component {
   componentWillMount() {
-    const url = 'https://api.github.com/repos/reactjs/react-redux/issues';
+    let url;
+    if (this.props.url.length > 0) {
+      url = this.props.url + 'issues';
+    } else {
+      url = 'https://api.github.com/repos/reactjs/react-redux/issues';
+    }
     if (storageAvailable()) {
       if (!localStorage.getItem('state') || !localStorage.getItem('etagIssues')) {
         this.props.fetchIssues(url);

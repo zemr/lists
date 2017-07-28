@@ -85,6 +85,7 @@ const Subscriber = styled.div`
 const propTypes = {
   type: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  url: PropTypes.string.isRequired,
   fetchContributors: PropTypes.func.isRequired,
   fetchSubscribers: PropTypes.func.isRequired
 };
@@ -93,11 +94,19 @@ export class People extends React.Component {
   componentWillMount() {
     let url, etags, fnName;
     if (this.props.type === "contributors") {
-      url = 'https://api.github.com/repos/reactjs/react-redux/contributors';
+      if (this.props.url.length > 0) {
+        url = this.props.url + 'contributors';
+      } else {
+        url = 'https://api.github.com/repos/reactjs/react-redux/contributors';
+      }
       etags = 'etagContributors';
       fnName = 'fetchContributors';
     } else if (this.props.type === "subscribers") {
-      url = 'https://api.github.com/repos/reactjs/react-redux/subscribers';
+      if (this.props.url.length > 0) {
+        url = this.props.url + 'subscribers';
+      } else {
+        url = 'https://api.github.com/repos/reactjs/react-redux/subscribers';
+      }
       etags = 'etagSubscribers';
       fnName = 'fetchSubscribers';
     }

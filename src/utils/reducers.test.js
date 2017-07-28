@@ -1,13 +1,13 @@
 import { fetchData } from './reducers';
 import * as helpers from './test-helpers';
-import { rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
+import { rStore, rStoreETags, rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
 global.TESTING = true;
 
 describe('reducers', () => {
 
   it('dispatches BEGIN action', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
     expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
@@ -15,7 +15,7 @@ describe('reducers', () => {
 
   it('starts fetching', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve());
     fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
     expect(fetch).toHaveBeenCalled();
@@ -29,7 +29,7 @@ describe('reducers', () => {
 
   it('dispatches SUCCESS action', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve('data'),
@@ -51,7 +51,7 @@ describe('reducers', () => {
 
   it('dispatches CLEAR action (one page of results)', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve('data'),
@@ -74,7 +74,7 @@ describe('reducers', () => {
 
   it('dispatches CLEAR action (first page of results)', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve('data'),
@@ -97,7 +97,7 @@ describe('reducers', () => {
 
   it('sets proper index for last page of results', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve('data'),
@@ -119,7 +119,7 @@ describe('reducers', () => {
 
   it('calls new fetching', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.resolve('data'),
@@ -142,7 +142,7 @@ describe('reducers', () => {
 
   it('calls new fetching with proper arguments (etag exists)', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    const getState = jest.fn(() => (rStoreETags));
     window.fetch = jest.fn(
       () => Promise.resolve({
         ok: true,
@@ -170,7 +170,7 @@ describe('reducers', () => {
 
   it('calls new fetching with proper arguments (etag doesn\'t exist)', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(
       () => Promise.resolve({
         ok: true,
@@ -198,7 +198,7 @@ describe('reducers', () => {
 
   it('dispatches FAIL action when promise value wasn\'t returned', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({}));
     fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
@@ -208,7 +208,7 @@ describe('reducers', () => {
 
   it('dispatches FAIL action when there\'s no proper json response', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: true,
       json: () => Promise.reject({ message: 'Malformed JSON response' }),
@@ -231,7 +231,7 @@ describe('reducers', () => {
 
   it('dispatches FAIL action when promise was rejected', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.reject({ message: 'Not Found' }));
     fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
@@ -241,7 +241,7 @@ describe('reducers', () => {
 
   it('dispatches FAIL action when there\'s no new data', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: [] } }));
+    const getState = jest.fn(() => (rStore));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,
@@ -256,7 +256,7 @@ describe('reducers', () => {
 
   it('checks second page of results for new data', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    const getState = jest.fn(() => (rStoreETags));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,
@@ -274,7 +274,7 @@ describe('reducers', () => {
 
   it('checks another page of results for new data', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    const getState = jest.fn(() => (rStoreETags));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,
@@ -292,7 +292,7 @@ describe('reducers', () => {
 
   it('doesn\'t check for new data after last page of results', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => ({ name: { etag: ['a','b','c','d'] } }));
+    const getState = jest.fn(() => (rStoreETags));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,

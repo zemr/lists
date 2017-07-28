@@ -18,6 +18,7 @@ describe('people: subscribers', () => {
       <People
         data={peopleData}
         type="subscribers"
+        url=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -32,6 +33,7 @@ describe('people: subscribers', () => {
       <People
         data={peopleData}
         type="subscribers"
+        url=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -50,6 +52,7 @@ describe('people: subscribers', () => {
       <People
         data={peopleData}
         type="subscribers"
+        url=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -64,6 +67,7 @@ describe('people: subscribers', () => {
       <People
         data={peopleData}
         type="subscribers"
+        url=""
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
@@ -79,6 +83,7 @@ describe('people: subscribers', () => {
       <People
         data={[]}
         type="subscribers"
+        url=""
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
