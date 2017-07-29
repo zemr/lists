@@ -19,6 +19,7 @@ describe('people: subscribers', () => {
         data={peopleData}
         type="subscribers"
         url=""
+        etag=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -34,6 +35,7 @@ describe('people: subscribers', () => {
         data={peopleData}
         type="subscribers"
         url=""
+        etag="abc"
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -42,7 +44,7 @@ describe('people: subscribers', () => {
     expect(mockFn.mock.calls[0].length).toBe(1);
     expect(mockFn.mock.calls[1].length).toBe(2);
     expect(mockFn.mock.calls[1][0]).toBe('https://api.github.com/repos/reactjs/react-redux/subscribers');
-    expect(mockFn.mock.calls[1][1]).toBe('etagValue');
+    expect(mockFn.mock.calls[1][1]).toBe('abc');
   });
 
   it('calls function to fetch data (localStorage not available)', () => {
@@ -53,6 +55,7 @@ describe('people: subscribers', () => {
         data={peopleData}
         type="subscribers"
         url=""
+        etag=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -71,6 +74,7 @@ describe('people: subscribers', () => {
         data={peopleData}
         type="subscribers"
         url="https://path/"
+        etag=""
         fetchContributors={() => {}}
         fetchSubscribers={mockFn}
       />
@@ -84,6 +88,7 @@ describe('people: subscribers', () => {
         data={peopleData}
         type="subscribers"
         url=""
+        etag=""
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
@@ -100,6 +105,7 @@ describe('people: subscribers', () => {
         data={[]}
         type="subscribers"
         url=""
+        etag=""
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />

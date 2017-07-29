@@ -14,6 +14,7 @@ describe('people', () => {
             data={peopleData}
             type="contributors"
             url=""
+            etag=""
           />
         </Provider>
       )
@@ -26,6 +27,7 @@ describe('people', () => {
             data={peopleData}
             type="subscribers"
             url=""
+            etag=""
           />
         </Provider>
       )

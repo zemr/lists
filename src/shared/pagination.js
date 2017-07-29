@@ -41,8 +41,18 @@ const Pages = styled.div`
 const propTypes = {
   type: PropTypes.string.isRequired,
   perPage: PropTypes.number.isRequired,
-  contributors: PropTypes.array.isRequired,
-  subscribers: PropTypes.array.isRequired
+  contributors: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.bool
+    ])
+  ).isRequired,
+  subscribers: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.bool
+    ])
+  ).isRequired
 };
 
 export class Pagination extends React.Component {
@@ -68,7 +78,7 @@ export class Pagination extends React.Component {
   }
 
   setPageCount() {
-    const data = this.flattenArrays(this.props[this.props.type]);
+    const data = this.flattenArrays(this.props[this.props.type].data);
     const perPage = this.props.perPage;
     let pages = data.length / perPage;
     if (data.length % perPage > 0) {
@@ -104,7 +114,7 @@ export class Pagination extends React.Component {
   }
 
   createDataChunk() {
-    const data = this.flattenArrays(this.props[this.props.type]);
+    const data = this.flattenArrays(this.props[this.props.type].data);
     const perPage = this.props.perPage;
     const currentPage = this.state.currentPage;
     const endValue = currentPage * perPage;
@@ -116,6 +126,8 @@ export class Pagination extends React.Component {
     props['type'] = this.props.type;
     props['data'] = this.createDataChunk();
     props['url'] = this.props.url;
+    const etag = this.props[this.props.type].etag[0];
+    props['etag'] = etag === undefined ? '' : etag;
 
     return (
       <PaginationWrapper>
@@ -130,9 +142,9 @@ Pagination.propTypes = propTypes;
 
 export default connect(
   state => ({
-    contributors: state.contributors.data,
-    subscribers: state.subscribers.data,
-    issues: state.issues.data,
+    contributors: state.contributors,
+    subscribers: state.subscribers,
+    issues: state.issues,
     url: state.repository.url
   })
 )(Pagination)

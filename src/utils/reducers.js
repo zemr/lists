@@ -70,13 +70,11 @@ export const fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
                 }
                 dispatch(fetchData(...args));
               }
-              if (dataPages > 1) {
-                if (!pages || !pages.next) {
-                  dispatch({
-                    type: actionTypes.TRIM,
-                    index: pages ? +pages.prev.page + 1 : 1
-                  })
-                }
+              if (!pages || !pages.next) {
+                dispatch({
+                  type: actionTypes.TRIM,
+                  index: pages ? +pages.prev.page + 1 : 1
+                })
               }
             }
           ).catch(
@@ -111,7 +109,7 @@ export const fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
             } else {
               dispatch({
                 type: actionTypes.TRIM,
-                index: dataPages
+                index: newPage
               })
             }
           }

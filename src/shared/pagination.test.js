@@ -12,8 +12,8 @@ describe('pagination', () => {
       <Pagination
         type="contributors"
         perPage={10}
-        contributors={[]}
-        subscribers={[]}
+        contributors={{ data: [], etag: []}}
+        subscribers={{}}
       >
         <Child />
       </Pagination>
@@ -29,7 +29,7 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={[]}
+        subscribers={{}}
       >
         <Child />
       </Pagination>
@@ -41,7 +41,7 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={5}
-        contributors={[]}
+        contributors={{}}
         subscribers={paginationData}
       >
         <Child />
@@ -57,7 +57,7 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={[]}
+        subscribers={{}}
       >
         <Child />
       </Pagination>
@@ -69,7 +69,7 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={1}
-        contributors={[]}
+        contributors={{}}
         subscribers={paginationData}
       >
         <Child />
@@ -82,8 +82,8 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={1}
-        contributors={[]}
-        subscribers={[]}
+        contributors={{}}
+        subscribers={{ data: [], etag: [] }}
       >
         <Child />
       </Pagination>
@@ -100,7 +100,7 @@ describe('pagination', () => {
         type="contributors"
         perPage={5}
         contributors={paginationData}
-        subscribers={[]}
+        subscribers={{}}
       >
         <Child />
       </Pagination>
@@ -112,8 +112,8 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={5}
-        contributors={[]}
-        subscribers={[]}
+        contributors={{}}
+        subscribers={{ data: [], etag: [] }}
       >
         <Child />
       </Pagination>
@@ -132,7 +132,7 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={[]}
+        subscribers={{}}
       >
         <Child />
       </Pagination>
@@ -155,7 +155,7 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={[]}
+        subscribers={{}}
       >
         <Child />
       </Pagination>

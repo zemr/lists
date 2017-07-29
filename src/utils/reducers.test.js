@@ -262,53 +262,6 @@ describe('reducers', () => {
     });
   });
 
-  it('doesn\'t dispatch TRIM action when old data set is the same size as new data set', () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn(() => (rStorePage));
-    window.fetch = jest.fn(() => Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve('data'),
-      headers: {
-        get: (arg) => {
-          if (arg === 'ETag') {
-            return rETag;
-          } else if (arg === 'Link') {
-            return undefined;
-          }
-        }
-      }
-    }));
-    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
-      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
-      expect(dispatch.mock.calls[1][0]).toEqual({ type: rActionTypes.CLEAR });
-      expect(dispatch.mock.calls[2][0]).toEqual({ data: 'data', etag: rETag, index: 0, type: rActionTypes.SUCCESS });
-      expect(dispatch.mock.calls[3]).toBeUndefined();
-    });
-  });
-
-  it('doesn\'t dispatch TRIM action when old data set is smaller then new data set', () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn(() => (rStorePage));
-    window.fetch = jest.fn(() => Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve('data'),
-      headers: {
-        get: (arg) => {
-          if (arg === 'ETag') {
-            return rETag;
-          } else if (arg === 'Link') {
-            return '<https://path?page=2>; rel="prev"'
-          }
-        }
-      }
-    }));
-    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
-      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
-      expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 2, type: rActionTypes.SUCCESS });
-      expect(dispatch.mock.calls[2]).toBeUndefined();
-    });
-  });
-
   it('dispatches FAIL action when promise value wasn\'t returned', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => (rStore));
@@ -417,6 +370,23 @@ describe('reducers', () => {
     });
   });
 
+  it('doesn\'t check second page when there\'s only one page of results', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStorePage));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchData(rUrl, 'a', rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(helpers.rDisplayArgs.mock.calls[0]).toBeUndefined();
+      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
   it('doesn\'t check for new data after last page of results', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => (rStoreETags));
@@ -445,7 +415,7 @@ describe('reducers', () => {
 
     fetchData(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
-      expect(dispatch.mock.calls[1][0]).toEqual({ index: 4, type: rActionTypes.TRIM });
+      expect(dispatch.mock.calls[1][0]).toEqual({ index: 5, type: rActionTypes.TRIM });
       expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });
   });

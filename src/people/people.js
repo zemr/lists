@@ -86,20 +86,21 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
   url: PropTypes.string.isRequired,
+  etag: PropTypes.string.isRequired,
   fetchContributors: PropTypes.func.isRequired,
   fetchSubscribers: PropTypes.func.isRequired
 };
 
 export class People extends React.Component {
   componentWillMount() {
-    let url, etags, fnName;
+    const etag = this.props.etag;
+    let url, fnName;
     if (this.props.type === "contributors") {
       if (this.props.url.length > 0) {
         url = this.props.url + 'contributors';
       } else {
         url = 'https://api.github.com/repos/reactjs/react-redux/contributors';
       }
-      etags = 'etagContributors';
       fnName = 'fetchContributors';
     } else if (this.props.type === "subscribers") {
       if (this.props.url.length > 0) {
@@ -107,16 +108,14 @@ export class People extends React.Component {
       } else {
         url = 'https://api.github.com/repos/reactjs/react-redux/subscribers';
       }
-      etags = 'etagSubscribers';
       fnName = 'fetchSubscribers';
     }
 
     if (storageAvailable()) {
-      if (!localStorage.getItem('state') || !localStorage.getItem(etags)) {
+      if (localStorage.getItem('state')) {
+        this.props[fnName](url, etag);
+      } else {
         this.props[fnName](url);
-      } else if (localStorage.getItem(etags)) {
-        const etag = JSON.parse(localStorage.getItem(etags));
-        this.props[fnName](url, etag[0]);
       }
     } else {
       this.props[fnName](url);

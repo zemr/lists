@@ -49,9 +49,6 @@ if (storageAvailable()) {
         }
       }
     );
-    saveStateData('etagContributors', store.getState().contributors.etag);
-    saveStateData('etagSubscribers', store.getState().subscribers.etag);
-    saveStateData('etagIssues', store.getState().issues.etag);
   }, 1000));
 }
 

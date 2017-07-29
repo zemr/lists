@@ -7,13 +7,15 @@ export const store = {
         data: [[{
           id: 7,
           login: 'seven'
-        }]]
+        }]],
+        etag: ['a']
       },
       subscribers: {
         data: [[{
           id: 8,
           login: 'eight'
-        }]]
+        }]],
+        etag: ['b']
       },
       issues: {
         data: [[{
@@ -24,7 +26,8 @@ export const store = {
           user: {
             login: 'nine'
           }
-        }]]
+        }]],
+        etag: ['c']
       },
       repository: {
         url: '',
@@ -101,7 +104,7 @@ export const rStoreETags = {
 export const rStorePage = {
   name: {
     data: [[]],
-    etag: []
+    etag: ['a', 'b']
   },
   repository: {
     auth: ''
@@ -130,11 +133,14 @@ export const rETagArray = ['a', 'b', 'c', 'd'];
 
 //pagination
 export const Child = () => (<div>child</div>);
-export const paginationData = [[
-  {"id": 7, "login": "seven"},
-  {"id": 8, "login": "eight"},
-  {"id": 9, "login": "nine"}
-]];
+export const paginationData = {
+  data: [[
+    { "id": 7, "login": "seven" },
+    { "id": 8, "login": "eight" },
+    { "id": 9, "login": "nine" }
+  ]],
+  etag: []
+};
 
 //issues
 export const issuesData = [

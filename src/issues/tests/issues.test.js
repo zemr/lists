@@ -25,6 +25,7 @@ describe('issues', () => {
       <Issues
         data={issuesData}
         url=""
+        etag=""
         fetchIssues={mockFn}
       />
     );
@@ -38,6 +39,7 @@ describe('issues', () => {
       <Issues
         data={issuesData}
         url=""
+        etag="abc"
         fetchIssues={mockFn}
       />
     );
@@ -45,7 +47,7 @@ describe('issues', () => {
     expect(mockFn.mock.calls[0].length).toBe(1);
     expect(mockFn.mock.calls[1].length).toBe(2);
     expect(mockFn.mock.calls[1][0]).toBe('https://api.github.com/repos/reactjs/react-redux/issues');
-    expect(mockFn.mock.calls[1][1]).toBe('etagValue');
+    expect(mockFn.mock.calls[1][1]).toBe('abc');
   });
 
   it('calls function to fetch data (localStorage not available)', () => {
@@ -56,6 +58,7 @@ describe('issues', () => {
       <Issues
         data={issuesData}
         url=""
+        etag=""
         fetchIssues={mockFn}
       />
     );
@@ -71,6 +74,7 @@ describe('issues', () => {
       <Issues
         data={issuesData}
         url="https://path/"
+        etag=""
         fetchIssues={mockFn}
       />
     );
@@ -82,6 +86,7 @@ describe('issues', () => {
       <Issues
         data={issuesData}
         url=""
+        etag=""
         fetchIssues={() => {}}
       />
     );
@@ -96,6 +101,7 @@ describe('issues', () => {
       <Issues
         data={[]}
         url=""
+        etag=""
         fetchIssues={() => {}}
       />
     );
@@ -109,7 +115,7 @@ describe('issues', () => {
     ReactDOM.render(
       (
         <Provider store={store}>
-          <ConnectedIssues data={issuesData} url="" />
+          <ConnectedIssues data={issuesData} url="" etag="" />
         </Provider>
       ), div);
   });
