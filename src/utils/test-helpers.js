@@ -64,11 +64,13 @@ export const rActionTypes = {
   BEGIN: 'test/FETCH_BEGIN',
   SUCCESS: 'test/FETCH_SUCCESS',
   FAIL: 'test/FETCH_FAIL',
-  CLEAR: 'test/CLEAR_STATE'
+  CLEAR: 'test/CLEAR_STATE',
+  TRIM: 'test/TRIM_ETAGS'
 };
 export let rDisplayArgs = (args) => args;
 export const rStore = {
   name: {
+    data: [],
     etag: []
   },
   repository: {
@@ -77,12 +79,33 @@ export const rStore = {
 };
 export const rStoreETags = {
   name: {
+    data: [[], [], [], []],
     etag: ['a', 'b', 'c', 'd']
   },
   repository: {
     auth: ''
   }
 };
+export const rStorePage = {
+  name: {
+    data: [[]],
+    etag: []
+  },
+  repository: {
+    auth: ''
+  }
+};
+export const rStorePages = {
+  name: {
+    data: [[], [], []],
+    etag: []
+  },
+  repository: {
+    auth: ''
+  }
+};
+export const rETagArray = ['a', 'b', 'c', 'd'];
+
 
 //pagination
 export const Child = () => (<div>child</div>);

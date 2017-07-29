@@ -1,6 +1,6 @@
 import reducer, { actionTypes, fetchContributors } from '../reducer-contributors';
 import store from '../../store';
-import { peopleData, rETag, rUrl } from '../../utils/test-helpers';
+import { peopleData, rETag, rUrl, rETagArray } from '../../utils/test-helpers';
 import * as reducers from '../../utils/reducers';
 
 describe('reducer-contributors', () => {
@@ -94,6 +94,27 @@ describe('reducer-contributors', () => {
       reducer({
         data: [],
         etag: [rETag],
+        fetching: false,
+        error: []
+      })
+    )
+  });
+
+  it('trims etag array', () => {
+    expect(
+      reducer(
+        {
+          data: [peopleData, peopleData],
+          etag: rETagArray,
+          fetching: false,
+          error: []
+        },
+        store.dispatch({ index: 2, type: actionTypes.TRIM })
+      )
+    ).toEqual(
+      reducer({
+        data: [peopleData, peopleData],
+        etag: ['a', 'b'],
         fetching: false,
         error: []
       })

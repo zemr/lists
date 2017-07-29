@@ -1,6 +1,6 @@
 import { fetchData } from './reducers';
 import * as helpers from './test-helpers';
-import { rStore, rStoreETags, rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
+import { rStore, rStoreETags, rStorePage, rStorePages, rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
 global.TESTING = true;
 
 describe('reducers', () => {
@@ -196,6 +196,100 @@ describe('reducers', () => {
     });
   });
 
+  it('dispatches TRIM action after getting one page of results', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStorePages));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve('data'),
+      headers: {
+        get: (arg) => {
+          if (arg === 'ETag') {
+            return rETag;
+          } else if (arg === 'Link') {
+            return undefined;
+          }
+        }
+      }
+    }));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ type: rActionTypes.CLEAR });
+      expect(dispatch.mock.calls[2][0]).toEqual({ data: 'data', etag: rETag, index: 0, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[3][0]).toEqual({ index: 1, type: rActionTypes.TRIM });
+    });
+  });
+
+  it('dispatches TRIM action after getting last page of results', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStorePages));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve('data'),
+      headers: {
+        get: (arg) => {
+          if (arg === 'ETag') {
+            return rETag;
+          } else if (arg === 'Link') {
+            return '<https://path?page=2>; rel="prev"'
+          }
+        }
+      }
+    }));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 2, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[2][0]).toEqual({ index: 3, type: rActionTypes.TRIM });
+    });
+  });
+
+  it('doesn\'t dispatch TRIM action when old data set is the same size as new data set', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStorePage));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve('data'),
+      headers: {
+        get: (arg) => {
+          if (arg === 'ETag') {
+            return rETag;
+          } else if (arg === 'Link') {
+            return undefined;
+          }
+        }
+      }
+    }));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ type: rActionTypes.CLEAR });
+      expect(dispatch.mock.calls[2][0]).toEqual({ data: 'data', etag: rETag, index: 0, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[3]).toBeUndefined();
+    });
+  });
+
+  it('doesn\'t dispatch TRIM action when old data set is smaller then new data set', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStorePage));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve('data'),
+      headers: {
+        get: (arg) => {
+          if (arg === 'ETag') {
+            return rETag;
+          } else if (arg === 'Link') {
+            return '<https://path?page=2>; rel="prev"'
+          }
+        }
+      }
+    }));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ data: 'data', etag: rETag, index: 2, type: rActionTypes.SUCCESS });
+      expect(dispatch.mock.calls[2]).toBeUndefined();
+    });
+  });
+
   it('dispatches FAIL action when promise value wasn\'t returned', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => (rStore));
@@ -239,9 +333,23 @@ describe('reducers', () => {
     });
   });
 
-  it('dispatches FAIL action when there\'s no new data', () => {
+  it('dispatches FAIL action when there\'s no new data (one page of data)', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => (rStore));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
+  it('dispatches FAIL action when there\'s no new data (multiples pages of data', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStoreETags));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,
@@ -302,7 +410,24 @@ describe('reducers', () => {
 
     fetchData(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
-      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+    });
+  });
+
+  it('dispatches TRIM action after checking for updates', () => {
+    const dispatch = jest.fn();
+    const getState = jest.fn(() => (rStoreETags));
+    window.fetch = jest.fn(() => Promise.resolve({
+      ok: false,
+      status: 304,
+      statusText: 'Not Modified'
+    }));
+    helpers.rDisplayArgs = jest.fn(helpers.rDisplayArgs);
+
+    fetchData(rUrl + '?page=4', 'd', rActionTypes)(dispatch, getState).then(() => {
+      expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1][0]).toEqual({ index: 4, type: rActionTypes.TRIM });
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });
   });
 

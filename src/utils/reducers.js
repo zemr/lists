@@ -1,11 +1,12 @@
 import parse from 'parse-link-header';
 import { rDisplayArgs } from './test-helpers';
 
-export let fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
+export const fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
   const name = url.indexOf('?') < 0
     ? url.substring(url.lastIndexOf('/')+1)
     : url.substring(url.lastIndexOf('/')+1, url.indexOf('?'));
   const { etag: etags } = getState()[name];
+  const dataPages = getState()[name].data.length;
   const { auth } = getState().repository;
 
   let initObject, args;
@@ -69,6 +70,14 @@ export let fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
                 }
                 dispatch(fetchData(...args));
               }
+              if (dataPages > 1) {
+                if (!pages || !pages.next) {
+                  dispatch({
+                    type: actionTypes.TRIM,
+                    index: pages ? +pages.prev.page + 1 : 1
+                  })
+                }
+              }
             }
           ).catch(
             error => dispatch({
@@ -78,26 +87,33 @@ export let fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
           )
       }
       if (response.status === 304) {
-        if (url.indexOf('?page') < 0) {
-          args = [url + '?page=2', etags[1], actionTypes];
-          /*global TESTING*/
-          if (TESTING) {
-            rDisplayArgs(...args);
-          }
-          dispatch(fetchData(...args));
-        } else {
-          const addon = url.indexOf('?page=');
-          const basicUrl = url.substring(0, addon);
-          const page = url.substring(addon + 6);
-          const index = +page;
-          const newPage = index + 1;
-          args = [basicUrl + '?page=' + newPage, etags[index], actionTypes];
-          if (index < etags.length) {
+        if (dataPages > 1) {
+          if (url.indexOf('?page') < 0) {
+            args = [url + '?page=2', etags[1], actionTypes];
             /*global TESTING*/
             if (TESTING) {
               rDisplayArgs(...args);
             }
             dispatch(fetchData(...args));
+          } else {
+            const addon = url.indexOf('?page=');
+            const basicUrl = url.substring(0, addon);
+            const page = url.substring(addon + 6);
+            const index = +page;
+            const newPage = index + 1;
+            args = [basicUrl + '?page=' + newPage, etags[index], actionTypes];
+            if (index < etags.length) {
+              /*global TESTING*/
+              if (TESTING) {
+                rDisplayArgs(...args);
+              }
+              dispatch(fetchData(...args));
+            } else {
+              dispatch({
+                type: actionTypes.TRIM,
+                index: dataPages
+              })
+            }
           }
         }
         throw new Error(response.statusText);
@@ -145,6 +161,11 @@ export const createReducer = (actionTypes) => {
           ...state,
           data: initialState.data,
           error: initialState.error
+        };
+      case actionTypes.TRIM:
+        return {
+          ...state,
+          etag: [...state.etag.slice(0, action.index)]
         };
       default:
         return state;

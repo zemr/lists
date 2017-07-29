@@ -1,6 +1,6 @@
 import reducer, { actionTypes, fetchIssues } from '../reducer-issues';
 import store from '../../store';
-import { issuesData, rETag, rUrl } from '../../utils/test-helpers';
+import { issuesData, rETag, rUrl, rETagArray } from '../../utils/test-helpers';
 import * as reducers from '../../utils/reducers';
 
 describe('reducer-issues', () => {
@@ -94,6 +94,27 @@ describe('reducer-issues', () => {
       reducer({
         data: [],
         etag: [rETag],
+        fetching: false,
+        error: []
+      })
+    )
+  });
+
+  it('trims etag array', () => {
+    expect(
+      reducer(
+        {
+          data: [issuesData, issuesData],
+          etag: rETagArray,
+          fetching: false,
+          error: []
+        },
+        store.dispatch({ index: 2, type: actionTypes.TRIM })
+      )
+    ).toEqual(
+      reducer({
+        data: [issuesData, issuesData],
+        etag: ['a', 'b'],
         fetching: false,
         error: []
       })
