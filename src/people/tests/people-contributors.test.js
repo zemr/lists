@@ -62,6 +62,22 @@ describe('people: contributors', () => {
     expect(mockFn.mock.calls[0][0]).toBe('https://api.github.com/repos/reactjs/react-redux/contributors');
   });
 
+  it('sets custom url', () => {
+    const mockFn = jest.fn();
+    //noinspection JSAnnotator
+    storage.storageAvailable = jest.fn(() => false);
+    TestUtils.renderIntoDocument(
+      <People
+        data={peopleData}
+        type="contributors"
+        url="https://path/"
+        fetchContributors={mockFn}
+        fetchSubscribers={() => {}}
+      />
+    );
+    expect(mockFn.mock.calls[0][0]).toBe('https://path/contributors');
+  });
+
   it('renders list', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People

@@ -63,6 +63,20 @@ describe('issues', () => {
     expect(mockFn.mock.calls[0][0]).toBe('https://api.github.com/repos/reactjs/react-redux/issues');
   });
 
+  it('sets custom url', () => {
+    const mockFn = jest.fn();
+    //noinspection JSAnnotator
+    storage.storageAvailable = jest.fn(() => false);
+    TestUtils.renderIntoDocument(
+      <Issues
+        data={issuesData}
+        url="https://path/"
+        fetchIssues={mockFn}
+      />
+    );
+    expect(mockFn.mock.calls[0][0]).toBe('https://path/issues');
+  });
+
   it('renders list', () => {
     const issuesList = TestUtils.renderIntoDocument(
       <Issues

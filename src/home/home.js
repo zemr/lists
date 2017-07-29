@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setRepository } from './reducer-repository';
 import styled from 'styled-components';
@@ -67,7 +68,11 @@ const Details = styled.div`
 
 `;
 
-class Home extends React.Component {
+const propTypes = {
+  setRepository: PropTypes.func.isRequired
+};
+
+export class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -161,6 +166,8 @@ class Home extends React.Component {
     )
   }
 }
+
+Home.propTypes = propTypes;
 
 export default connect(
   state => ({}),

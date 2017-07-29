@@ -60,6 +60,18 @@ export const rInitObject = {
     "If-None-Match": rETag
   }
 };
+const rAuth = 'abc';
+export const rInitObjectAuth = {
+  headers: {
+    "Authorization": "Basic " + rAuth
+  }
+};
+export const rInitObjectAuthE = {
+  headers: {
+    "If-None-Match": rETag,
+    "Authorization": "Basic " + rAuth
+  }
+};
 export const rActionTypes = {
   BEGIN: 'test/FETCH_BEGIN',
   SUCCESS: 'test/FETCH_SUCCESS',
@@ -102,6 +114,15 @@ export const rStorePages = {
   },
   repository: {
     auth: ''
+  }
+};
+export const rStoreAuth = {
+  name: {
+    data: [],
+    etag: []
+  },
+  repository: {
+    auth: rAuth
   }
 };
 export const rETagArray = ['a', 'b', 'c', 'd'];

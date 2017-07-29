@@ -62,6 +62,22 @@ describe('people: subscribers', () => {
     storageSpy.mockRestore();
   });
 
+  it('sets custom url', () => {
+    const mockFn = jest.fn();
+    //noinspection JSAnnotator
+    storage.storageAvailable = jest.fn(() => false);
+    TestUtils.renderIntoDocument(
+      <People
+        data={peopleData}
+        type="subscribers"
+        url="https://path/"
+        fetchContributors={() => {}}
+        fetchSubscribers={mockFn}
+      />
+    );
+    expect(mockFn.mock.calls[0][0]).toBe('https://path/subscribers');
+  });
+
   it('renders list', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People

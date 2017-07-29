@@ -1,6 +1,9 @@
 import { fetchData } from './reducers';
 import * as helpers from './test-helpers';
-import { rStore, rStoreETags, rStorePage, rStorePages, rETag, rUrl, rInitObject, rActionTypes } from './test-helpers';
+import {
+  rStore, rStoreETags, rStorePage, rStorePages, rStoreAuth,
+  rETag, rUrl, rActionTypes,
+  rInitObject, rInitObjectAuth, rInitObjectAuthE } from './test-helpers';
 global.TESTING = true;
 
 describe('reducers', () => {
@@ -25,6 +28,22 @@ describe('reducers', () => {
     fetchData(rUrl, rETag, rActionTypes)(dispatch, getState);
     expect(fetch.mock.calls[1][0]).toBe(rUrl);
     expect(fetch.mock.calls[1][1]).toEqual(rInitObject);
+  });
+
+  it('sends proper headers while fetching', () => {
+    const dispatch = jest.fn();
+    let getState = jest.fn(() => (rStore));
+    window.fetch = jest.fn(() => Promise.resolve());
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
+    expect(fetch.mock.calls[0][1]).toEqual({});
+    fetchData(rUrl, rETag, rActionTypes)(dispatch, getState);
+    expect(fetch.mock.calls[1][1]).toEqual(rInitObject);
+
+    getState = jest.fn(() => (rStoreAuth));
+    fetchData(rUrl, undefined, rActionTypes)(dispatch, getState);
+    expect(fetch.mock.calls[2][1]).toEqual(rInitObjectAuth);
+    fetchData(rUrl, rETag, rActionTypes)(dispatch, getState);
+    expect(fetch.mock.calls[3][1]).toEqual(rInitObjectAuthE);
   });
 
   it('dispatches SUCCESS action', () => {
