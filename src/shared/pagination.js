@@ -41,23 +41,13 @@ const Pages = styled.div`
 const propTypes = {
   type: PropTypes.string.isRequired,
   perPage: PropTypes.number.isRequired,
-  contributors: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.bool
-    ])
-  ).isRequired,
-  subscribers: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.bool
-    ])
-  ).isRequired
+  contributors: PropTypes.array.isRequired,
+  subscribers: PropTypes.array.isRequired
 };
 
 export class Pagination extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       pages: null,
@@ -78,7 +68,7 @@ export class Pagination extends React.Component {
   }
 
   setPageCount() {
-    const data = this.flattenArrays(this.props[this.props.type].data);
+    const data = this.flattenArrays(this.props[this.props.type]);
     const perPage = this.props.perPage;
     let pages = data.length / perPage;
     if (data.length % perPage > 0) {
@@ -114,7 +104,7 @@ export class Pagination extends React.Component {
   }
 
   createDataChunk() {
-    const data = this.flattenArrays(this.props[this.props.type].data);
+    const data = this.flattenArrays(this.props[this.props.type]);
     const perPage = this.props.perPage;
     const currentPage = this.state.currentPage;
     const endValue = currentPage * perPage;
@@ -126,8 +116,7 @@ export class Pagination extends React.Component {
     props['type'] = this.props.type;
     props['data'] = this.createDataChunk();
     props['url'] = this.props.url;
-    const etag = this.props[this.props.type].etag[0];
-    props['etag'] = etag === undefined ? '' : etag;
+    props['etag'] = this.context.store.getState()[this.props.type].etag[0];
 
     return (
       <PaginationWrapper>
@@ -140,11 +129,15 @@ export class Pagination extends React.Component {
 
 Pagination.propTypes = propTypes;
 
+Pagination.contextTypes = {
+  store: PropTypes.object.isRequired
+};
+
 export default connect(
   state => ({
-    contributors: state.contributors,
-    subscribers: state.subscribers,
-    issues: state.issues,
+    contributors: state.contributors.data,
+    subscribers: state.subscribers.data,
+    issues: state.issues.data,
     url: state.repository.url
   })
 )(Pagination)
