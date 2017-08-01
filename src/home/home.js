@@ -16,6 +16,7 @@ const StyledHome = styled.div`
   
   @media (min-width: 650px) {
     margin-top: 5px;
+    margin-left: 5px;
   }
 `;
 
@@ -53,7 +54,7 @@ const HomeContent = styled.div`
     outline: 0;
     
     &:hover {
-      background-color: #aa483f;
+      background-color: #b24b42;
     }
   }
 `;
@@ -61,6 +62,7 @@ const HomeContent = styled.div`
 const Details = styled.div`
   margin-top: 1em;
   font-size: 0.9em;
+  word-break: break-all;
     
   div {
     margin: 4px 8px;
@@ -93,9 +95,15 @@ export class Home extends React.Component {
 
   handleSubmit(event) {
     const url = 'https://api.github.com/repos/' + this.state.owner + '/' + this.state.repo + '/';
+    const repo = 'https://github.com/' + this.state.owner + '/' + this.state.repo;
     const auth = btoa(this.state.login + ':' + this.state.password);
     event.preventDefault();
-    this.props.setRepository(url, auth);
+    this.props.setRepository(url, auth, repo);
+    this.clearState();
+  }
+
+  clearState() {
+    this.setState({ owner: '', repo: '', login: '', password: '' });
   }
 
   render() {
@@ -104,9 +112,17 @@ export class Home extends React.Component {
         <HomeContent>
           <div>Repository Data</div>
 
-          <Details>
-            Default repository: <i>github.com/reactjs/react-redux</i>
-          </Details>
+          {
+            this.props.repo.length === 0
+              ?
+              <Details>
+                Default repository: <i>github.com/reactjs/react-redux</i>
+              </Details>
+              :
+              <Details>
+                Setted repository: <i>{this.props.repo}</i>
+              </Details>
+          }
 
           <Details>
             Provide another repository:
@@ -170,8 +186,10 @@ export class Home extends React.Component {
 Home.propTypes = propTypes;
 
 export default connect(
-  state => ({}),
+  state => ({
+    repo: state.repository.repo
+  }),
   dispatch => ({
-    setRepository: (url, auth) => dispatch(setRepository(url, auth))
+    setRepository: (url, auth, repo) => dispatch(setRepository(url, auth, repo))
   })
 )(Home)

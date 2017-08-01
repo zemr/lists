@@ -31,7 +31,8 @@ export const store = {
       },
       repository: {
         url: '',
-        auth: ''
+        auth: '',
+        repo: ''
       }
     }
   },

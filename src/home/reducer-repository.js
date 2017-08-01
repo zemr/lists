@@ -1,12 +1,13 @@
 const SET = 'repository/SET';
 
-export const setRepository = (url, auth) => ({
-  type: SET, url, auth
+export const setRepository = (url, auth, repo) => ({
+  type: SET, url, auth, repo
 });
 
 const initialState = {
   url: '',
-  auth: ''
+  auth: '',
+  repo: ''
 };
 
 const reducer = (state = initialState, action = {}) => {
@@ -14,7 +15,8 @@ const reducer = (state = initialState, action = {}) => {
     case SET:
       return {
         url: action.url,
-        auth: action.auth
+        auth: action.auth,
+        repo: action.repo
       };
     default:
       return state;
