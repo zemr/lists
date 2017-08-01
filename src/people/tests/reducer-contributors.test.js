@@ -121,6 +121,27 @@ describe('reducer-contributors', () => {
     )
   });
 
+  it('saves copy of data', () => {
+    expect(
+      reducer(
+        {
+          data: [peopleData],
+          etag: [rETag],
+          fetching: false,
+          error: []
+        },
+        store.dispatch({ type: actionTypes.REFRESH })
+      )
+    ).toEqual(
+      reducer({
+        data: [peopleData],
+        etag: [rETag],
+        fetching: false,
+        error: []
+      })
+    )
+  });
+
   it('calls fetching function with proper arguments', () => {
     const dispatch = jest.fn();
     //noinspection JSAnnotator

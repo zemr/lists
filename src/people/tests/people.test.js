@@ -15,6 +15,7 @@ describe('people', () => {
             type="contributors"
             url=""
             etag=""
+            result={true}
           />
         </Provider>
       )
@@ -28,6 +29,7 @@ describe('people', () => {
             type="subscribers"
             url=""
             etag=""
+            result={true}
           />
         </Provider>
       )

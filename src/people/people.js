@@ -5,6 +5,7 @@ import { storageAvailable } from '../utils/storage';
 import { fetchContributors } from './reducer-contributors';
 import { fetchSubscribers } from './reducer-subscribers';
 import Loader from '../shared/loader';
+import Filler from '../shared/filler';
 import styled from 'styled-components';
 
 const PersonList = styled.div`
@@ -87,6 +88,7 @@ const propTypes = {
   data: PropTypes.array.isRequired,
   url: PropTypes.string.isRequired,
   etag: PropTypes.string.isRequired,
+  result: PropTypes.bool.isRequired,
   fetchContributors: PropTypes.func.isRequired,
   fetchSubscribers: PropTypes.func.isRequired
 };
@@ -123,11 +125,15 @@ export class People extends React.Component {
   }
 
   render() {
-    const { data, type } = this.props;
+    const { data, type, result } = this.props;
     let content;
 
     if (data.length === 0) {
-      content = <Loader />;
+      if (result) {
+        content = <Loader />;
+      } else {
+        content = <Filler type={type} />;
+      }
     } else {
       if (type === "contributors") {
         content = (

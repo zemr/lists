@@ -20,6 +20,7 @@ describe('people: contributors', () => {
         type="contributors"
         url=""
         etag=""
+        result={true}
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
       />
@@ -36,6 +37,7 @@ describe('people: contributors', () => {
         type="contributors"
         url=""
         etag="abc"
+        result={true}
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
       />
@@ -57,6 +59,7 @@ describe('people: contributors', () => {
         type="contributors"
         url=""
         etag=""
+        result={true}
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
       />
@@ -75,6 +78,7 @@ describe('people: contributors', () => {
         type="contributors"
         url="https://path/"
         etag=""
+        result={true}
         fetchContributors={mockFn}
         fetchSubscribers={() => {}}
       />
@@ -89,6 +93,7 @@ describe('people: contributors', () => {
         type="contributors"
         url=""
         etag=""
+        result={true}
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
@@ -97,13 +102,14 @@ describe('people: contributors', () => {
     expect(spans.length).toBe(6);
   });
 
-  it('doesn\'t render list when there is no data', () => {
+  it('renders loading animation', () => {
     const peopleList = TestUtils.renderIntoDocument(
       <People
         data={[]}
         type="contributors"
         url=""
         etag=""
+        result={true}
         fetchContributors={() => {}}
         fetchSubscribers={() => {}}
       />
@@ -111,6 +117,22 @@ describe('people: contributors', () => {
     const divs = TestUtils.scryRenderedDOMComponentsWithTag(peopleList, 'div');
     const loader = divs[1].outerHTML;
     expect(loader.indexOf('Fetching data') > 0).toBeTruthy();
+  });
+
+  it('renders message when there is no data', () => {
+    const issuesList = TestUtils.renderIntoDocument(
+      <People
+        data={[]}
+        type="contributors"
+        url=""
+        etag=""
+        result={false}
+        fetchContributors={() => {}}
+        fetchSubscribers={() => {}}
+      />
+    );
+    const span = TestUtils.findRenderedDOMComponentWithTag(issuesList, 'span');
+    expect(span.textContent).toBe('No data available.');
   });
 
 });

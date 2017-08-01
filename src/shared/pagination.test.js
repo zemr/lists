@@ -12,8 +12,10 @@ describe('pagination', () => {
       <Pagination
         type="contributors"
         perPage={10}
-        contributors={{ data: [], etag: []}}
-        subscribers={{}}
+        contributors={[]}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -29,7 +31,9 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={{}}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -41,8 +45,10 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={5}
-        contributors={{}}
+        contributors={[]}
+        contributorsETag={[]}
         subscribers={paginationData}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -57,7 +63,9 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={{}}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -69,8 +77,10 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={1}
-        contributors={{}}
+        contributors={[]}
+        contributorsETag={[]}
         subscribers={paginationData}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -82,8 +92,10 @@ describe('pagination', () => {
       <Pagination
         type="subscribers"
         perPage={1}
-        contributors={{}}
-        subscribers={{ data: [], etag: [] }}
+        contributors={[]}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -100,26 +112,30 @@ describe('pagination', () => {
         type="contributors"
         perPage={5}
         contributors={paginationData}
-        subscribers={{}}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
       , div
     );
-    expect(instance.state).toEqual({ pages: 1, currentPage: 1 });
+    expect(instance.state).toEqual({ pages: 1, currentPage: 1, result: true });
 
     ReactDOM.render(
       <Pagination
         type="subscribers"
         perPage={5}
-        contributors={{}}
-        subscribers={{ data: [], etag: [] }}
+        contributors={[]}
+        contributorETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
       , div
     );
-    expect(instance.state).toEqual({ pages: 0, currentPage: 1 });
+    expect(instance.state).toEqual({ pages: 0, currentPage: 1, result: true });
 
     document.documentElement.removeChild(div);
   });
@@ -132,17 +148,19 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={{}}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
       , div
     );
-    expect(instance.state).toEqual({ pages: 2, currentPage: 1 });
+    expect(instance.state).toEqual({ pages: 2, currentPage: 1, result: true });
 
     const pages = document.documentElement.querySelectorAll('div[aria-label]');
     TestUtils.Simulate.click(pages[1]);
-    expect(instance.state).toEqual({ pages: 2, currentPage: 2 });
+    expect(instance.state).toEqual({ pages: 2, currentPage: 2, result: true });
 
     document.documentElement.removeChild(div);
   });
@@ -155,7 +173,9 @@ describe('pagination', () => {
         type="contributors"
         perPage={2}
         contributors={paginationData}
-        subscribers={{}}
+        contributorsETag={[]}
+        subscribers={[]}
+        subscribersETag={[]}
       >
         <Child />
       </Pagination>
@@ -172,6 +192,43 @@ describe('pagination', () => {
     let secondPage = pages[1].outerHTML;
     expect(firstPage.indexOf('aria-selected="true"') > 0).toBeFalsy();
     expect(secondPage.indexOf('aria-selected="true"') > 0).toBeTruthy();
+
+    document.documentElement.removeChild(div);
+  });
+
+  it('updates result value when there\'s no data', () => {
+    const div = document.createElement('div');
+    document.documentElement.appendChild(div);
+    const instance = ReactDOM.render(
+      <Pagination
+        type="subscribers"
+        perPage={2}
+        contributors={[]}
+        contributorsETag={[]}
+        subscribers={[[]]}
+        subscribersETag={['']}
+      >
+        <Child />
+      </Pagination>
+      , div
+    );
+
+    ReactDOM.render(
+      <Pagination
+        type="subscribers"
+        perPage={2}
+        contributors={[]}
+        contributorsETag={[]}
+        subscribers={[[]]}
+        subscribersETag={['']}
+      >
+        <Child />
+      </Pagination>
+      , div
+    );
+    expect(instance.state.result).toBeFalsy();
+
+    document.documentElement.removeChild(div);
   });
 
   it('renders without crashing (connected)', () => {

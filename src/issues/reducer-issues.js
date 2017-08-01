@@ -5,7 +5,8 @@ export const actionTypes = {
   SUCCESS: 'issues/FETCH_SUCCESS',
   FAIL: 'issues/FETCH_FAIL',
   CLEAR: 'issues/CLEAR_STATE',
-  TRIM: 'issues/TRIM_ETAGS'
+  TRIM: 'issues/TRIM_ETAGS',
+  REFRESH: 'issues/REFRESH_DATA'
 };
 
 export const fetchIssues = (url, etag) => dispatch => {

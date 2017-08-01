@@ -26,6 +26,7 @@ describe('issues', () => {
         data={issuesData}
         url=""
         etag=""
+        result={true}
         fetchIssues={mockFn}
       />
     );
@@ -40,6 +41,7 @@ describe('issues', () => {
         data={issuesData}
         url=""
         etag="abc"
+        result={true}
         fetchIssues={mockFn}
       />
     );
@@ -59,6 +61,7 @@ describe('issues', () => {
         data={issuesData}
         url=""
         etag=""
+        result={true}
         fetchIssues={mockFn}
       />
     );
@@ -75,6 +78,7 @@ describe('issues', () => {
         data={issuesData}
         url="https://path/"
         etag=""
+        result={true}
         fetchIssues={mockFn}
       />
     );
@@ -87,6 +91,7 @@ describe('issues', () => {
         data={issuesData}
         url=""
         etag=""
+        result={true}
         fetchIssues={() => {}}
       />
     );
@@ -96,12 +101,13 @@ describe('issues', () => {
     expect(divs[4].textContent).toBe('nine');
   });
 
-  it('doesn\'t render list when there is no data', () => {
+  it('renders loading animation', () => {
     const issuesList = TestUtils.renderIntoDocument(
       <Issues
         data={[]}
         url=""
         etag=""
+        result={true}
         fetchIssues={() => {}}
       />
     );
@@ -110,12 +116,26 @@ describe('issues', () => {
     expect(loader.indexOf('Fetching data') > 0).toBeTruthy();
   });
 
+  it('renders message when there is no data', () => {
+    const issuesList = TestUtils.renderIntoDocument(
+      <Issues
+        data={[]}
+        url=""
+        etag=""
+        result={false}
+        fetchIssues={() => {}}
+      />
+    );
+    const span = TestUtils.findRenderedDOMComponentWithTag(issuesList, 'span');
+    expect(span.textContent).toBe('There aren\'t any open issues for this repository.');
+  });
+
   it('renders without crashing (connected, no subcomponents)', () => {
     const div = document.createElement('div');
     ReactDOM.render(
       (
         <Provider store={store}>
-          <ConnectedIssues data={issuesData} url="" etag="" />
+          <ConnectedIssues data={issuesData} url="" etag="" result={true} />
         </Provider>
       ), div);
   });

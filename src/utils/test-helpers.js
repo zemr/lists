@@ -38,13 +38,11 @@ export const store = {
   dispatch: () => {},
   subscribe: () => {}
 };
-
 export const peopleData = [
   {"id": 7, "login": "seven"},
   {"id": 8, "login": "eight"},
   {"id": 9, "login": "nine"}
 ];
-
 export const storageData = {
   contributors: {
     data: [[{ id: 7, login: 'seven' }]],
@@ -52,7 +50,6 @@ export const storageData = {
     error: []
   }
 };
-
 export const setupState = "{\"contributors\":{\"data\":[[{\"id\":7,\"login\":\"seven\"}]],\"etag\":[],\"error\":[]}}";
 
 // reducers
@@ -80,7 +77,8 @@ export const rActionTypes = {
   SUCCESS: 'test/FETCH_SUCCESS',
   FAIL: 'test/FETCH_FAIL',
   CLEAR: 'test/CLEAR_STATE',
-  TRIM: 'test/TRIM_ETAGS'
+  TRIM: 'test/TRIM_ETAGS',
+  REFRESH: 'test/REFRESH_DATA'
 };
 export let rDisplayArgs = (args) => args;
 export const rStore = {
@@ -130,17 +128,13 @@ export const rStoreAuth = {
 };
 export const rETagArray = ['a', 'b', 'c', 'd'];
 
-
 //pagination
 export const Child = () => (<div>child</div>);
-export const paginationData = {
-  data: [[
-    { "id": 7, "login": "seven" },
-    { "id": 8, "login": "eight" },
-    { "id": 9, "login": "nine" }
-  ]],
-  etag: []
-};
+export const paginationData = [
+  { "id": 7, "login": "seven" },
+  { "id": 8, "login": "eight" },
+  { "id": 9, "login": "nine" }
+];
 
 //issues
 export const issuesData = [

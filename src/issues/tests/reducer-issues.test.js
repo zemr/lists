@@ -121,6 +121,27 @@ describe('reducer-issues', () => {
     )
   });
 
+  it('saves copy of data', () => {
+    expect(
+      reducer(
+        {
+          data: [issuesData],
+          etag: [rETag],
+          fetching: false,
+          error: []
+        },
+        store.dispatch({ type: actionTypes.REFRESH })
+      )
+    ).toEqual(
+      reducer({
+        data: [issuesData],
+        etag: [rETag],
+        fetching: false,
+        error: []
+      })
+    )
+  });
+
   it('calls fetching function with proper arguments', () => {
     const dispatch = jest.fn();
     //noinspection JSAnnotator

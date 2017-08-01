@@ -11,6 +11,7 @@ const StyledLoader = styled.div`
   
   @media (min-width: 650px) {
     margin-top: 5px;
+    margin-left: 5px;
   }
 `;
 
@@ -55,4 +56,4 @@ const Loader = () => (
   </StyledLoader>
 );
 
-export default Loader;
+export default Loader

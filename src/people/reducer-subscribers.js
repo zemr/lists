@@ -5,7 +5,8 @@ export const actionTypes = {
   SUCCESS: 'subscribers/FETCH_SUCCESS',
   FAIL: 'subscribers/FETCH_FAIL',
   CLEAR: 'subscribers/CLEAR_STATE',
-  TRIM: 'subscribers/TRIM_ETAGS'
+  TRIM: 'subscribers/TRIM_ETAGS',
+  REFRESH: 'subscribers/REFRESH_DATA'
 };
 
 export const fetchSubscribers = (url, etag) => dispatch => {

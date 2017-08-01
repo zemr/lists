@@ -307,7 +307,7 @@ describe('reducers', () => {
 
   it('dispatches FAIL action when there\'s no new data (one page of data)', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => (rStore));
+    const getState = jest.fn(() => (rStorePage));
     window.fetch = jest.fn(() => Promise.resolve({
       ok: false,
       status: 304,
@@ -315,7 +315,8 @@ describe('reducers', () => {
     }));
     fetchData(rUrl, undefined, rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
-      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+      expect(dispatch.mock.calls[1]).toEqual([{ type: rActionTypes.REFRESH }]);
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });
   });
 
@@ -382,8 +383,9 @@ describe('reducers', () => {
 
     fetchData(rUrl, 'a', rActionTypes)(dispatch, getState).then(() => {
       expect(dispatch.mock.calls[0][0]).toEqual({ type: rActionTypes.BEGIN });
+      expect(dispatch.mock.calls[1]).toEqual([{ type: rActionTypes.REFRESH }]);
       expect(helpers.rDisplayArgs.mock.calls[0]).toBeUndefined();
-      expect(dispatch.mock.calls[1]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
+      expect(dispatch.mock.calls[2]).toEqual([{ error: 'Not Modified', type: rActionTypes.FAIL }]);
     });
   });
 

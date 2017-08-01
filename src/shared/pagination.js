@@ -46,21 +46,33 @@ const propTypes = {
 };
 
 export class Pagination extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.state = {
       pages: null,
-      currentPage: 1
+      currentPage: 1,
+      result: true
     };
   }
 
   componentWillMount() {
-    this.setPageCount()
+    this.setPageCount();
   }
 
   componentDidUpdate() {
-    this.setPageCount()
+    this.setPageCount();
+    this.notifyIfEmpty();
+  }
+
+  notifyIfEmpty() {
+    if (this.props[this.props.type].length === 1 && this.props[this.props.type][0].length === 0) {
+      if (this.state.result) {
+        this.setState({
+          result: false
+        });
+      }
+    }
   }
 
   flattenArrays(array) {
@@ -113,10 +125,12 @@ export class Pagination extends React.Component {
 
   render() {
     const props = {};
+    const etag = this.props[this.props.type + 'ETag'][0];
     props['type'] = this.props.type;
     props['data'] = this.createDataChunk();
     props['url'] = this.props.url;
-    props['etag'] = this.context.store.getState()[this.props.type].etag[0];
+    props['etag'] = etag === undefined ? '' : etag;
+    props['result'] = this.state.result;
 
     return (
       <PaginationWrapper>
@@ -129,15 +143,14 @@ export class Pagination extends React.Component {
 
 Pagination.propTypes = propTypes;
 
-Pagination.contextTypes = {
-  store: PropTypes.object.isRequired
-};
-
 export default connect(
   state => ({
     contributors: state.contributors.data,
+    contributorsETag: state.contributors.etag,
     subscribers: state.subscribers.data,
+    subscribersETag: state.subscribers.etag,
     issues: state.issues.data,
+    issuesETag: state.issues.etag,
     url: state.repository.url
   })
 )(Pagination)

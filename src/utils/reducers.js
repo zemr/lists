@@ -85,7 +85,9 @@ export const fetchData = (url, etag, actionTypes) => (dispatch, getState) => {
           )
       }
       if (response.status === 304) {
-        if (dataPages > 1) {
+        if (dataPages === 1) {
+          dispatch({ type: actionTypes.REFRESH })
+        } else {
           if (url.indexOf('?page') < 0) {
             args = [url + '?page=2', etags[1], actionTypes];
             /*global TESTING*/
@@ -164,6 +166,11 @@ export const createReducer = (actionTypes) => {
         return {
           ...state,
           etag: [...state.etag.slice(0, action.index)]
+        };
+      case actionTypes.REFRESH:
+        return {
+          ...state,
+          data: [...state.data.slice()]
         };
       default:
         return state;

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { storageAvailable } from '../utils/storage';
 import { fetchIssues } from './reducer-issues';
 import Loader from '../shared/loader';
+import Filler from '../shared/filler';
 import Issue from './issue';
 import styled from 'styled-components';
 
@@ -16,6 +17,7 @@ const propTypes = {
   data: PropTypes.array.isRequired,
   url: PropTypes.string.isRequired,
   etag: PropTypes.string.isRequired,
+  result: PropTypes.bool.isRequired,
   fetchIssues: PropTypes.func.isRequired
 };
 
@@ -40,14 +42,18 @@ export class Issues extends React.Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, result } = this.props;
 
     return (
       <div>
         {
           data.length === 0
             ?
-            <Loader />
+            result
+              ?
+              <Loader />
+              :
+              <Filler type="issues" />
             :
             <IssuesList>
               {
