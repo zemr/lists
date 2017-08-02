@@ -7,6 +7,7 @@ import { fetchSubscribers } from './reducer-subscribers';
 import Loader from '../shared/loader';
 import Filler from '../shared/filler';
 import styled from 'styled-components';
+import { contributorsPalette, subscribersPalette } from '../utils/colors';
 
 const PersonList = styled.div`
   display: flex;
@@ -27,8 +28,8 @@ const Contributor = styled.div`
   height: 50px;
   padding: 7px 7px 5px;
   margin: 5px;
-  background-color: #d6b142;
-  color: #602a1e;
+  background-color: ${contributorsPalette.yellowA};
+  color: ${contributorsPalette.brown};
   word-break: break-all;
     
   @media (max-width: 349px) {
@@ -52,7 +53,7 @@ const Contributor = styled.div`
     height: 30px;
     padding: 6px;
     border-radius: 50%;
-    background-color: #c99836;
+    background-color: ${contributorsPalette.yellowB};
     line-height: 30px;
     text-align: center;
     
@@ -67,15 +68,15 @@ const Contributor = styled.div`
 const Subscriber = styled.div`
   padding: 5px 10px;
   margin: 5px;  
-  background-color: #d84d38;
-  color: #fff2bf;
+  background-color: ${subscribersPalette.redA};
+  color: ${subscribersPalette.yellow};
   
   &:nth-child(4n) {
-    background-color: #b2112f;
+    background-color: ${subscribersPalette.redB};
   }
   
   &:nth-child(7n) {
-    background-color: #e07f23;
+    background-color: ${subscribersPalette.orange};
   }
   
   @media (min-width: 1200px) {

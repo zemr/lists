@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { loaderPalette } from '../utils/colors';
 
 const StyledLoader = styled.div`
   width: 25px;
@@ -19,7 +20,7 @@ const LoaderItem = styled.div`
   width: 25px;
   height: 50px;
   margin-bottom: 5px;
-  background-color: #d6b142;
+  background-color: ${loaderPalette.yellowA};
   animation: pulse 2s infinite;
  
   &:nth-of-type(2) {
@@ -36,13 +37,13 @@ const LoaderItem = styled.div`
 
   @keyframes pulse {
     0% {
-      background-color: #d6b142;
+      background-color: ${loaderPalette.yellowA};
     }
     25% {
-      background-color: #c99836;
+      background-color: ${loaderPalette.yellowB};
     }
     50% {
-      background-color: #d6b142;
+      background-color: ${loaderPalette.yellowA};
     }
   }
 `;

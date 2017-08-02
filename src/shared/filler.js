@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { fillerPalette } from '../utils/colors';
 
 const StyledFiller = styled.div`
   padding: 5px 10px;
-  background-color: #ffdc78;
-  color: #a52929;
+  background-color: ${fillerPalette.yellow};
+  color: ${fillerPalette.red};
   
   @media (max-width: 649px) {
     margin-top: -5px;

@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setRepository } from './reducer-repository';
 import styled from 'styled-components';
+import { homePalette } from '../utils/colors';
 
 const StyledHome = styled.div`
   max-width: 420px;
   padding: 20px 20px 25px;
-  background-color: #c15347;
+  background-color: ${homePalette.redA};
  
   @media (max-width: 649px) {
     margin-right: auto;
@@ -22,16 +23,16 @@ const StyledHome = styled.div`
 
 const HomeContent = styled.div`
   width: 100%;
-  color: #fffcdd;
+  color: ${homePalette.yellowA};
   
   > div:nth-child(1) {
     font-weight: bold;
   }
   
   input {
-    background-color: #fffff2;
+    background-color: ${homePalette.yellowB};
     font-size: 1em;
-    color: #af4a41;
+    color: ${homePalette.redB};
   }
   
   input[type="text"],
@@ -48,13 +49,13 @@ const HomeContent = styled.div`
     margin-top: 10px;
     margin-left: 10px;
     font-size: .9em; 
-    border: 2px solid #fffff2;
-    background-color: #c15347;
-    color: #fffff2;
+    border: 2px solid ${homePalette.yellowB};
+    background-color: ${homePalette.redA};
+    color: ${homePalette.yellowB};
     outline: 0;
     
     &:hover {
-      background-color: #b24b42;
+      background-color: ${homePalette.redC};
     }
   }
 `;
@@ -67,7 +68,6 @@ const Details = styled.div`
   div {
     margin: 4px 8px;
   }
-
 `;
 
 const propTypes = {

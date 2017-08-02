@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { sidebarPalette } from '../utils/colors';
 
 const StyledSidebar = styled.div` 
   padding: 10px;  
   margin-bottom: 5px;
-  background-color: #ffdc78;
+  background-color: ${sidebarPalette.yellow};
   
   @media (max-width: 649px) {
     flex: 1;
@@ -26,7 +27,7 @@ const List = styled.ul`
 `;
 
 const StyledLink = styled(Link)`
-  color: #a52929;
+  color: ${sidebarPalette.red};
   font-weight: bold;
   text-decoration: none;  
 `;

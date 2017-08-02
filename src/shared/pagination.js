@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { paginationPalette } from '../utils/colors';
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -15,11 +16,11 @@ const Page = styled.div`
   width: 20px;
   height: 20px;
   margin: 3px;
-  background-color: #ffdc78;
+  background-color: ${paginationPalette.yellow};
   border-radius: 50%;
 
   &[aria-selected=true] {
-    background-color: #aa3838;
+    background-color: ${paginationPalette.red};
   }   
 `;
 
