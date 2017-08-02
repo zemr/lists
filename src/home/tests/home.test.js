@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-dom/test-utils';
-import { Home } from './home';
+import { Home } from '../home';
 
 describe('home', () => {
   const mockFn = jest.fn();

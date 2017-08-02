@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
-import ConnectedPagination, { Pagination } from './pagination';
-import { Child, paginationData, store } from '../utils/test-helpers';
+import ConnectedPagination, { Pagination } from '../pagination';
+import { Child, paginationData, store } from '../../utils/test-helpers';
 
 describe('pagination', () => {
 

@@ -1,5 +1,5 @@
-import reducer, { setRepository } from './reducer-repository';
-import { rUrl } from '../utils/test-helpers';
+import reducer, { setRepository } from '../reducer-repository';
+import { rUrl } from '../../utils/test-helpers';
 
 describe('reducer-repository', () => {
 

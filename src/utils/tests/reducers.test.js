@@ -1,9 +1,9 @@
-import { fetchData } from './reducers';
-import * as helpers from './test-helpers';
+import { fetchData } from '../reducers';
+import * as helpers from '../test-helpers';
 import {
   rStore, rStoreETags, rStorePage, rStorePages, rStoreAuth,
   rETag, rUrl, rActionTypes,
-  rInitObject, rInitObjectAuth, rInitObjectAuthE } from './test-helpers';
+  rInitObject, rInitObjectAuth, rInitObjectAuthE } from '../test-helpers';
 global.TESTING = true;
 
 describe('reducers', () => {

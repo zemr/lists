@@ -1,5 +1,5 @@
-import { saveStateData, loadState, storageAvailable } from './storage';
-import { storageData } from './test-helpers';
+import { saveStateData, loadState, storageAvailable } from '../storage';
+import { storageData } from '../test-helpers';
 
 describe('storage', () => {
 
