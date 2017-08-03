@@ -29,44 +29,81 @@ const HomeContent = styled.div`
     font-weight: bold;
   }
   
+  > div:nth-child(2) {
+    margin-top: 1em;
+  }
+  
+  > div:nth-child(3) {
+    margin-top: 1.5em;
+  }
+`;
+
+const Details = styled.div`
+  font-size: .9em;
+  word-break: break-all;
+      
+  form {
+    margin: .7em 8px 4px;
+  }
+  
+  div {
+    font-size: .9em;
+  }
+  
+  div:nth-child(1) {
+    line-height: 1.9;  
+
+    @media (max-width: 650px) {
+      margin-bottom: 4px;  
+    }
+
+    span {
+      display: inline-block;
+      margin-right: 4px;
+      margin-left: 4px;
+      font-style: italic;
+    }
+  }
+  
+  div:nth-child(2) span {  
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  
   input {
     background-color: ${homePalette.yellowB};
-    font-size: 1em;
     color: ${homePalette.redB};
+    font-size: 1em;    
   }
   
   input[type="text"],
   input[type="password"] {
     width: 100px;
-    margin-right: 2px;
-    margin-left: 2px;
     border: 0;
     outline: 0;
+    box-shadow: none;
+  }
+  
+  input[name="owner"] {
+    margin-left: 4px;    
+  }
+     
+  input[type="password"] {
+    margin-left: 6px;
   }
   
   input[type="submit"] {
     padding: 4px 6px;
-    margin-top: 10px;
-    margin-left: 10px;
-    font-size: .9em; 
     border: 2px solid ${homePalette.yellowB};
+    margin-top: 1.4em;
     background-color: ${homePalette.redA};
     color: ${homePalette.yellowB};
+    font-size: .9em;
     outline: 0;
     
     &:hover {
       background-color: ${homePalette.redC};
     }
-  }
-`;
-
-const Details = styled.div`
-  margin-top: 1em;
-  font-size: 0.9em;
-  word-break: break-all;
-    
-  div {
-    margin: 4px 8px;
   }
 `;
 
@@ -120,7 +157,8 @@ export class Home extends React.Component {
               </Details>
               :
               <Details>
-                Setted repository: <i>{this.props.repo}</i>
+                Setted repository: <br />
+                <i>{this.props.repo}</i>
               </Details>
           }
 
@@ -138,7 +176,7 @@ export class Home extends React.Component {
                   aria-required="true"
                   required
                 />
-                /
+                <span>/</span>
                 <input
                   type="text"
                   name="repo"
@@ -150,8 +188,8 @@ export class Home extends React.Component {
                 />
               </div>
 
-              <label>
-                <div>Your GitHub username and password:
+                <div>
+                  <span>Your GitHub username and password:</span>
                   <br />
                   <input
                     type="text"
@@ -172,7 +210,6 @@ export class Home extends React.Component {
                     required
                   />
                 </div>
-              </label>
 
               <input type="submit" value="Set repository"/>
             </form>

@@ -26,8 +26,11 @@ export const appPalette = {
 };
 
 export const sidebarPalette = {
-  red: red1,
-  yellow: yellow3
+  redA: red1,
+  redB: red2,
+  yellowA: yellow3,
+  yellowB: yellow7,
+  yellowC: yellow4
 };
 
 export const homePalette = {
